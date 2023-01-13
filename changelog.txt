@@ -1,0 +1,16 @@
+=====================CHANGELOG=====================
+
+-UI update (:
+-added page interface
+-cleaned buttons on left
+-set one color scheme
+-added animations to page interface
+-reworked update mechanism
+-general refactoring
+-added sayings list back
+-cleaned up header animation
+-changed font to RobotoMono-Light
+-cleared out settings area for future update
+
+
+There is probably gonna be bugs. yolo <3

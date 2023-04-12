@@ -1,16 +1,6 @@
 =====================CHANGELOG=====================
 
--UI update (:
--added page interface
--cleaned buttons on left
--set one color scheme
--added animations to page interface
--reworked update mechanism
--general refactoring
--added sayings list back
--cleaned up header animation
--changed font to RobotoMono-Light
--cleared out settings area for future update
+-added Dinkum script and Button
+-fixed application icon not showing up
+-that's literally it
 
-
-There is probably gonna be bugs. yolo <3

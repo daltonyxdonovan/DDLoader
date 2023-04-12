@@ -7,8 +7,9 @@
 #include <fstream>
 #include <windows.h>
 #include <Lmcons.h>
+#include <vector>
 
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 //in the standard namespace
 using namespace std;
@@ -253,6 +254,15 @@ public:
 
 #pragma region METHODS
 
+void remove_old_loader()
+{
+	
+	//if loader.exe exists in directory, remove it
+	if (std::filesystem::exists("loader.exe"))
+	{
+		std::filesystem::remove("loader.exe");
+	}
+}
 
 void run_command(string command)
 {
@@ -387,7 +397,166 @@ void reset_window(sf::RenderWindow& window)
 }
 
 
+
+	
+
 #pragma endregion
+
+#pragma region steamID_get
+
+struct SteamUser {
+	int steamID = 0;
+	std::string accountName = "default";
+	std::string personaName = "default";
+	bool rememberPassword = false;
+	bool wantsOfflineMode = false;
+	bool skipOfflineModeWarning = false;
+	bool allowAutoLogin = false;
+	bool mostRecent = false;
+	std::string timestamp = "9999999";
+};
+
+void parseSteamUsers(std::vector<SteamUser>& users, const std::string& filename) {
+	std::ifstream file(filename);
+	if (!file.is_open()) {
+		std::cerr << "Failed to open file: " << filename << std::endl;
+		return;
+	}
+
+	std::string line;
+	SteamUser currentUser;
+	bool inUserBlock = false;
+	while (std::getline(file, line)) {
+		if (line.empty() || line[0] == '/' || line[0] == '\n') {
+			// skip comments and empty lines
+			continue;
+		}
+		if (line[0] == '}') {
+			// end of user block
+			if (inUserBlock) {
+				users.push_back(currentUser);
+				currentUser = SteamUser();
+				inUserBlock = false;
+			}
+		}
+		else if (line[0] == '"') {
+			// new key-value pair
+			size_t pos = line.find('"', 1);
+			if (pos != std::string::npos) { // check if search string was found
+				std::string key = line.substr(1, pos - 1);
+				if (line.size() > pos + 2) { // check if there is a value to extract
+					std::string value = line.substr(pos + 2, line.size() - pos - 3);
+					if (key == "AccountName") {
+						currentUser.accountName = value;
+						cout << value << endl;
+					}
+					else if (key == "PersonaName") {
+						currentUser.personaName = value;
+					}
+					else if (key == "RememberPassword") {
+						currentUser.rememberPassword = (value == "1");
+					}
+					else if (key == "WantsOfflineMode") {
+						currentUser.wantsOfflineMode = (value == "1");
+					}
+					else if (key == "SkipOfflineModeWarning") {
+						currentUser.skipOfflineModeWarning = (value == "1");
+					}
+					else if (key == "AllowAutoLogin") {
+						currentUser.allowAutoLogin = (value == "1");
+					}
+					else if (key == "MostRecent") {
+						currentUser.mostRecent = (value == "1");
+					}
+					else if (key == "Timestamp") {
+						currentUser.timestamp = value;
+					}
+					else if (key == "steamID") {
+						try {
+							currentUser.steamID = std::stoi(value);
+						}
+						catch (const std::invalid_argument& e) {
+							std::cerr << "Invalid steamID value: " << value << std::endl;
+						}
+					}
+				}
+			}
+		}
+		else if (line[0] == '{') {
+			// start of user block
+			inUserBlock = true;
+		}
+	}
+
+	file.close();
+}
+
+
+void read_vdf(SteamUser steamUser, vector<SteamUser> steamUsers)
+{
+	//read vdf file
+	ifstream vdf_file;
+	vdf_file.open("loginusers.vdf");
+	string vdf_string;
+	string line;
+	while (getline(vdf_file, line))
+	{
+		//if line starts with "
+		if (line[0] == '"')
+		{
+			cout << line << endl;
+			//if line contains "PersonaName"
+			if (line.find("PersonaName") != string::npos)
+			{
+				//get the persona name
+				size_t pos = line.find('"', 1);
+				if (pos != std::string::npos) 
+				{ // check if search string was found
+					std::string key = line.substr(1, pos - 1);
+					if (line.size() > pos + 2) 
+					{ // check if there is a value to extract
+						std::string value = line.substr(pos + 2, line.size() - pos - 3);
+						if (key == "PersonaName")
+						{
+							cout << "persona found" << endl;
+							steamUser.personaName = value;
+							cout << value << endl;
+						}
+
+					}
+				}
+			}
+		}
+		vdf_string += line;
+		vdf_string += "\n";
+	}
+	vdf_file.close();
+
+
+	//save to log.txt
+	ofstream log_file;
+	log_file.open("users.txt");
+	log_file << vdf_string;
+	log_file.close();
+}
+
+
+string get_steam_persona(vector<SteamUser> users)
+{
+	//return the persona name of the most recent user
+	string persona;
+	persona = users[0].personaName;
+
+	
+
+
+	return persona;
+}
+
+#pragma endregion
+
+
+
 
 int main()
 {
@@ -395,8 +564,24 @@ int main()
 	sf::Event event;
 	srand(time(NULL));
 	sf::Image icon;
-	icon.loadFromFile("/resources/Icon.png");
+
+	if (!icon.loadFromFile("resources/Icon.png"));
+	{
+		//cout << "icon not found" << endl;
+	}
+	
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
+
+	bool running = true;
+
+	
+	vector<SteamUser> users;
+	SteamUser user = SteamUser();
+	read_vdf(user, users);
+	
+
+	
 
 #pragma region VARIABLE_CREATION
 
@@ -429,7 +614,7 @@ int main()
 	sayings.push_back("blnk says i'm a dick tater");
 	sayings.push_back("i love you jen-nay");
 	sayings.push_back("jimmy's mom is kinda hot");
-	sayings.push_back("i'm a big fan of the show");
+	sayings.push_back("willy bum bum");
 	sayings.push_back("a cop needed my mouse");
 	//sayings.push_back("SKEDADDLE SKIDOODLE YOUR DICK IS A NOODLE");
 	sayings.push_back("do ya got any sayings");
@@ -440,10 +625,10 @@ int main()
 	sayings.push_back("welp, that's grounded");
 	sayings.push_back("dalton, the dandelion hunter");
 	sayings.push_back("Oh, you're finally awake");
-	sayings.push_back("war, war never changes");
+	sayings.push_back("noot, noot never changes");
 	sayings.push_back("this is an uwu free zone");
 	sayings.push_back("uwu");
-	sayings.push_back("SS LAKEWATER - never forget");
+	sayings.push_back("SS LAKEWATER - n3vr 4get");
 	sayings.push_back("well i'm no car scientist but-");
 	sayings.push_back("i think that's just a mechanic");
 
@@ -465,7 +650,7 @@ int main()
 	//set up text
 	sf::Text program_title;
 	program_title.setFont(font);
-	program_title.setString("LOAD-R BY DALTONYX");
+	program_title.setString("LOAD-R");
 	program_title.setCharacterSize(10);
 	program_title.setStyle(sf::Text::Bold);
 	program_title.setFillColor(sf::Color::White);
@@ -492,7 +677,8 @@ int main()
 	display_boxes.push_back(DisplayBox(sf::Vector2f(632, 415), sf::Vector2f(600, 730), sf::Color(30, 30, 30)));
 	display_boxes.push_back(DisplayBox(sf::Vector2f(632, 1215), sf::Vector2f(600, 730), sf::Color(30, 30, 30), "GAMES"));
 	display_boxes.push_back(DisplayBox(sf::Vector2f(632, 2015), sf::Vector2f(600, 730), sf::Color(30, 30, 30), "OTHER LAUNCHERS"));
-	display_boxes.push_back(DisplayBox(sf::Vector2f(632, 2815), sf::Vector2f(600, 730), sf::Color(30, 30, 30), "USER SETTINGS"));
+	//string steamPersona = get_steam_persona(users);
+	display_boxes.push_back(DisplayBox(sf::Vector2f(632, 2815), sf::Vector2f(600, 730), sf::Color(30, 30, 30),  "'S SETTINGS"));
 
 	vector<DisplayBox> info_boxes;
 	info_boxes.push_back(DisplayBox(sf::Vector2f(1268, 415), sf::Vector2f(600, 730), sf::Color(30, 30, 30)));
@@ -525,6 +711,7 @@ int main()
 	texture_raft.loadFromFile("resources/images/raft.png");
 	patches_games.push_back(Button(sf::Vector2f(display_boxes[1].position.x, display_boxes[1].position.y - 300), sf::Vector2f(180, 50), sf::Color(30, 30, 30), sf::Color(220, 220, 220), "RAFT", 30, true));
 	
+	
 	sf::Texture texture_grounded;
 	texture_grounded.loadFromFile("resources/images/grounded.png");
 	patches_games.push_back(Button(sf::Vector2f(display_boxes[1].position.x + 190, display_boxes[1].position.y - 300), sf::Vector2f(180, 50), sf::Color(30, 30, 30), sf::Color(220, 220, 220), "GROUNDED", 30, true));
@@ -532,6 +719,11 @@ int main()
 	sf::Texture texture_skyrim;
 	texture_skyrim.loadFromFile("resources/images/skyrim.png");
 	patches_games.push_back(Button(sf::Vector2f(display_boxes[1].position.x - 190, display_boxes[1].position.y - 200), sf::Vector2f(180, 50), sf::Color(30, 30, 30), sf::Color(220, 220, 220), "SKYRIM", 30, true));
+
+	sf::Texture texture_dinkum;
+	texture_dinkum.loadFromFile("resources/images/dinky.jpg");
+	patches_games.push_back(Button(sf::Vector2f(display_boxes[1].position.x - 190, display_boxes[1].position.y - 50), sf::Vector2f(180, 50), sf::Color(30, 30, 30), sf::Color(220, 220, 220), "DINKUM", 30, true));
+
 
 	sf::Texture texture_nexus;
 	texture_nexus.loadFromFile("resources/images/nexus.png");
@@ -606,22 +798,28 @@ int main()
 
 #pragma endregion
 
-	while (window.isOpen())
+	while (running)
 	{
 
 #pragma region EVENT_HANDLING
 		while (window.pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed)
+			{
+				running = false;
 				window.close();
+			}
 			if (event.type == sf::Event::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Escape)
+				{
+					running = false;
 					window.close();
+				}
 			}
 		}
 
-		//switch statement to handle clicks from buttons
+		//button click handling
 		for (int i = 0; i < buttons.size(); i++)
 		{
 			buttons[i].update(window);
@@ -630,6 +828,7 @@ int main()
 				switch (i)
 				{
 				case 0: // x button
+					running = false;
 					window.close();
 					break;
 
@@ -733,7 +932,10 @@ int main()
 					info_box_display.setTexture(&texture_skyrim);
 					break;
 				
-				
+				case 4: //dinkum button
+					substate = 4;
+					info_box_display.setTexture(&texture_dinkum);
+					break;
 				
 				
 				
@@ -814,6 +1016,13 @@ int main()
 						run_command(command);
 						info_box_buttons[i].text_string = "Done!";
 					}
+					//if substate is 4:
+					if (substate == 4)
+					{
+						string command = "python resources/scripts/dinkum_modloader.py";
+						run_command(command);
+						info_box_buttons[i].text_string = "Done!";
+					}
 					break;
 				case 1: //open browser button
 					//if substate is 0:
@@ -879,6 +1088,9 @@ int main()
 		}
 		patches_games[3].position = sf::Vector2f(display_boxes[1].position.x + (-1 * 190), display_boxes[1].position.y - 100);
 		patches_games[3].set_position(sf::Vector2f(display_boxes[1].position.x + (-1 * 190), display_boxes[1].position.y - 100));
+
+		patches_games[4].position = sf::Vector2f(display_boxes[1].position.x + (0 * 190), display_boxes[1].position.y - 100);
+		patches_games[4].set_position(sf::Vector2f(display_boxes[1].position.x + (0 * 190), display_boxes[1].position.y - 100));
 
 		//make sure all buttons in info_box_buttons stay relative to the same display box
 		for (int i = -1; i < 2; i++)

@@ -28,7 +28,7 @@ int state = 0;
 int substate = 0;
 int header_ticker = 0;
 int header_anim_ticker = 0;
-float version = 2.1;
+float version = 2.2;
 bool needs_update = false;
 
 #pragma region CLASSES
@@ -328,7 +328,14 @@ string run_command_string(string command)
     return data;
 }
 
+void cleanup()
+{
+	//clear all memory
+	//delete all pointers
+	//delete all objects
+	
 
+}
 
 
 bool check_for_update()
@@ -514,9 +521,10 @@ void parseSteamUsers(std::vector<SteamUser>& users, const std::string& filename)
 			inUserBlock = true;
 		}
 	}
-
 	file.close();
 }
+
+
 
 
 void read_vdf(SteamUser steamUser, vector<SteamUser> steamUsers)
@@ -529,36 +537,11 @@ void read_vdf(SteamUser steamUser, vector<SteamUser> steamUsers)
 	while (getline(vdf_file, line))
 	{
 		//if line starts with "
-		if (line[0] == '"')
-		{
-			cout << line << endl;
-			//if line contains "PersonaName"
-			if (line.find("PersonaName") != string::npos)
-			{
-				//get the persona name
-				size_t pos = line.find('"', 1);
-				if (pos != std::string::npos) 
-				{ // check if search string was found
-					std::string key = line.substr(1, pos - 1);
-					if (line.size() > pos + 2) 
-					{ // check if there is a value to extract
-						std::string value = line.substr(pos + 2, line.size() - pos - 3);
-						if (key == "PersonaName")
-						{
-							cout << "persona found" << endl;
-							steamUser.personaName = value;
-							cout << value << endl;
-						}
-
-					}
-				}
-			}
-		}
+		
 		vdf_string += line;
 		vdf_string += "\n";
 	}
 	vdf_file.close();
-
 
 	//save to log.txt
 	ofstream log_file;
@@ -834,10 +817,11 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 			{
+				//free memory and close window
+				std::atexit(cleanup);
 				running = false;
 				window.close();
 			}
-			//mouse click handling
 			if (event.type == sf::Event::MouseButtonPressed)
 			{
 				if (event.mouseButton.button == sf::Mouse::Left)
@@ -869,6 +853,7 @@ int main()
 			{
 				if (event.key.code == sf::Keyboard::Escape)
 				{
+					std::atexit(cleanup);
 					running = false;
 					window.close();
 				}
@@ -887,6 +872,7 @@ int main()
 				switch (i)
 				{
 				case 0: // x button
+					std::atexit(cleanup);
 					running = false;
 					window.close();
 					break;

@@ -298,11 +298,7 @@ void run_command(string command)
     return;
 }
 
-#include <iostream>
-#include <cstdio>
-#include <cstring>
 
-using namespace std;
 
 string run_command_string(string command)
 {
@@ -333,12 +329,7 @@ string run_command_string(string command)
 }
 
 
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <cstdlib>
 
-using namespace std;
 
 bool check_for_update()
 {
@@ -679,6 +670,7 @@ int main()
 	sf::Font font;
 	font.loadFromFile("resources/RobotoMono-Light.ttf");
 
+	bool windowheld = false;
 	
 
 	
@@ -845,6 +837,34 @@ int main()
 				running = false;
 				window.close();
 			}
+			//mouse click handling
+			if (event.type == sf::Event::MouseButtonPressed)
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					//check if mouse is within 50px of the top of the window
+					if (sf::Mouse::getPosition(window).y < 50)
+					{
+						//check if mouse is within 50px of the right of the window
+						if (sf::Mouse::getPosition(window).x > window.getSize().x - 50)
+						{
+							
+						}
+						else
+						{
+							windowheld = true;
+							
+						}
+					}
+				}
+			}
+			if (event.type == sf::Event::MouseButtonReleased)
+			{
+				if (event.mouseButton.button == sf::Mouse::Left)
+				{
+					windowheld = false;
+				}
+			}
 			if (event.type == sf::Event::KeyPressed)
 			{
 				if (event.key.code == sf::Keyboard::Escape)
@@ -854,6 +874,9 @@ int main()
 				}
 			}
 		}
+
+		if (windowheld)
+			window.setPosition(sf::Mouse::getPosition() - sf::Vector2i(window.getSize().x / 2, 25));
 
 		//button click handling
 		for (int i = 0; i < buttons.size(); i++)

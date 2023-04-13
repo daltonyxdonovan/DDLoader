@@ -1,13 +1,18 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <SFML/Graphics.hpp>
-#include <atlstr.h>
+
 #include <SFML/Network.hpp>
 #include <iostream>
 #include <filesystem>
 #include <fstream>
-#include <windows.h>
-#include <Lmcons.h>
+//#include <windows.h>
+#include <iconv.h>
 #include <vector>
+#include <string>
+#include <cstdio>
+#include <stdlib.h>
+#include <string.h>
+#include <cstring>
 
 //#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
@@ -266,100 +271,130 @@ void remove_old_loader()
 
 void run_command(string command)
 {
-	string data;
-	FILE* stream;
-	const int max_buffer = 256;
-	char buffer[max_buffer];
-	command.append(" 2>&1");
+    string data;
+    FILE* stream;
+    const int max_buffer = 256;
+    char buffer[max_buffer];
+    command.append(" 2>&1");
 
-	stream = _popen(command.c_str(), "r");
-	if (stream)
-	{
-		while (!feof(stream))
-			if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
-		_pclose(stream);
-	}
-	return;
+#ifdef _WIN32
+    stream = _popen(command.c_str(), "r");
+#else
+    stream = popen(command.c_str(), "r");
+#endif
+
+    if (stream)
+    {
+        while (!feof(stream))
+            if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
+#ifdef _WIN32
+        _pclose(stream);
+#else
+        pclose(stream);
+#endif
+    }
+
+    cout << data << endl;
+    return;
 }
+
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+
+using namespace std;
 
 string run_command_string(string command)
 {
-	string data;
-	FILE* stream;
-	const int max_buffer = 256;
-	char buffer[max_buffer];
-	command.append(" 2>&1");
+    string data;
+    FILE* stream;
+    const int max_buffer = 256;
+    char buffer[max_buffer];
+    command.append(" 2>&1");
 
-	stream = _popen(command.c_str(), "r");
-	if (stream)
-	{
-		while (!feof(stream))
-			if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
-		_pclose(stream);
-	}
-	return data;
+#ifdef _WIN32
+    stream = _popen(command.c_str(), "r");
+#else
+    stream = popen(command.c_str(), "r");
+#endif
+
+    if (stream)
+    {
+        while (!feof(stream))
+            if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
+#ifdef _WIN32
+        _pclose(stream);
+#else
+        pclose(stream);
+#endif
+    }
+
+    return data;
 }
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cstdlib>
+
+using namespace std;
 
 bool check_for_update()
 {
-	//get username from environment
-	char* username = getenv("USERNAME");
-	CString username_cstr(username);
+    //get username from environment
+    char* username = getenv("USERNAME");
+    string username_str(username);
 
+    //read version.txt from http://daltonyx.com/loader/version.txt
+    //if version.txt is not the same as the version variable, return true
+    //else return false
 
+    //download version.txt with curl
+    //if in visual studio
+    string curl_command;
+    if (username_str == "dalto" || username_str == "calli")
+        curl_command = "curl http://192.168.1.48:8000/loader/version.txt -o version.txt && curl http://192.168.1.48:8000/loader/changelog.txt -o changelog.txt";
+    else
+    {
+        curl_command = "curl http://97.88.21.85:8000/loader/version.txt -o version.txt && curl http://97.88.21.85:8000/loader/changelog.txt -o changelog.txt";
+    }
+    system(curl_command.c_str());
 
-	//read version.txt from http://daltonyx.com/loader/version.txt
-	//if version.txt is not the same as the version variable, return true
-	//else return false
+    //read version.txt
+    ifstream version_file2;
+    version_file2.open("version.txt");
+    string version_string;
+    version_file2 >> version_string;
+    version_file2.close();
 
-	//download version.txt with curl
-	//if in visual studio
-	if (username_cstr == "dalto" || username_cstr == "calli")
-		system("curl http://192.168.1.48:8000/loader/version.txt -o version.txt && curl http://192.168.1.48:8000/loader/changelog.txt -o changelog.txt");
-	else
-	{
-		system("curl http://97.88.21.85:8000/loader/version.txt -o version.txt && curl http://97.88.21.85:8000/loader/changelog.txt -o changelog.txt");
-	}
+    //convert changelog.txt to string
+    ifstream changelog_file;
+    changelog_file.open("changelog.txt");
+    string changelog_string;
+    string line;
+    while (getline(changelog_file, line))
+    {
+        changelog_string += line;
+        changelog_string += "\n";
+    }
+    changelog_file.close();
 
+    cout << "\n" << "version.txt and changelog downloaded from server! Checking for update..." << "\nYour version: " << version << "\nNew version:  " << version_string << endl;
+    cout << "\n" << changelog_string << endl;
 
+    //convert version_string to float
+    float version_float = stof(version_string);
 
-	//read version.txt
-	ifstream version_file2;
-	version_file2.open("version.txt");
-	string version_string;
-	version_file2 >> version_string;
-	version_file2.close();
-
-	//convert changelog.txt to string
-	ifstream changelog_file;
-	changelog_file.open("changelog.txt");
-	string changelog_string;
-	string line;
-	while (getline(changelog_file, line))
-	{
-		changelog_string += line;
-		changelog_string += "\n";
-	}
-	changelog_file.close();
-
-	cout << "\n" << "version.txt and changelog downloaded from server! Checking for update..." << "\nYour version: " << version << "\nNew version:  " << version_string << endl;
-	cout << "\n" << changelog_string << endl;
-
-
-	//convert version_string to float
-	float version_float = stof(version_string);
-
-
-
-	//compare version_float to version
-	if (version_float > version)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+    //compare version_float to version
+    if (version_float > version)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void swap_vector_indexes(int index1, int index2, vector<string> sayings_vector)
@@ -371,6 +406,7 @@ void swap_vector_indexes(int index1, int index2, vector<string> sayings_vector)
 
 }
 
+/*
 void maximize_window(sf::RenderWindow& window)
 {
 	if (!maximized)
@@ -394,7 +430,7 @@ void reset_window(sf::RenderWindow& window)
 	//reset window
 	ShowWindow(window.getSystemHandle(), SW_RESTORE);
 	maximized = false;
-}
+}*/
 
 
 

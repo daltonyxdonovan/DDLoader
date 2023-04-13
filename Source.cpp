@@ -522,7 +522,7 @@ void read_vdf(SteamUser steamUser, vector<SteamUser> steamUsers)
 							steamUser.personaName = value;
 							cout << value << endl;
 						}
-
+  .
 					}
 				}
 			}

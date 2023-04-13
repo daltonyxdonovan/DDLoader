@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <fstream>
 //#include <windows.h>
-#include <iconv.h>
+//#include <iconv.h>
 #include <vector>
 #include <string>
 #include <cstdio>
@@ -28,7 +28,7 @@ int state = 0;
 int substate = 0;
 int header_ticker = 0;
 int header_anim_ticker = 0;
-float version = 2.2;
+float version = 3.0;
 bool needs_update = false;
 
 #pragma region CLASSES

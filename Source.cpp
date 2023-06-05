@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Network.hpp>
 #include <iostream>
+#include <cctype>
 #include <filesystem>
 #include <fstream>
 #include <vector>
@@ -10,8 +11,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <cstring>
-
-//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 //i know, i know, i shouldnt use namespace std due to naming collisions, but i dont care and it's useful on a solo project
 using namespace std;
@@ -37,37 +36,64 @@ public:
 	sf::Text text;
 	sf::Text bepinex_version;
 	sf::Font font;
+	sf::Sprite sprite;
+	sf::RectangleShape divider1;
+	sf::RectangleShape divider2;
+	string DISPLAY_NAME = "havendock";
 
 	MainDisplay(string name, int bep_version, sf::Vector2f position, sf::Vector2f size, sf::Texture texture)
+		: text("<game_name>", font, 20), bepinex_version("BEPINEX " + bep_version, font, 10)
 	{
 		this->shape.setSize(size);
-		this->shape.setFillColor(sf::Color(50, 50, 50, 255));
+		this->shape.setFillColor(sf::Color(40, 40, 40, 255));
 		this->shape.setOrigin(size.x / 2, size.y / 2);
 		this->shape.setPosition(position);
-		this->font.loadFromFile("resources/Roboto-Regular.ttf");
+		this->divider1.setSize(sf::Vector2f(25, size.y+40));
+		this->divider1.setFillColor(sf::Color(50, 50, 50, 255));
+		this->divider1.setOrigin(1.5, (size.y+20) / 2);
+		this->divider1.setPosition(position.x - 100, position.y);
+		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
 		this->text.setFont(font);
-		this->text.setString(name);
+		this->text.setString("noodles");
 		this->text.setCharacterSize(20);
 		this->text.setFillColor(sf::Color(255, 255, 255, 255));
-		this->text.setPosition(shape.getPosition().x, shape.getPosition().y + (shape.getSize().y / 2 - 30));
+		this->text.setPosition(shape.getPosition().x-380-(text.getGlobalBounds().width/2), shape.getPosition().y);
 		this->bepinex_version.setFont(font);
 		this->bepinex_version.setString("BEPINEX " + bep_version);
 		this->bepinex_version.setCharacterSize(10);
 		this->bepinex_version.setFillColor(sf::Color(255, 255, 255, 255));
 		this->bepinex_version.setPosition(shape.getPosition().x, shape.getPosition().y + (shape.getSize().y / 2 - 50));
 		this->texture = texture;
+		this->sprite.setTexture(this->texture);
+		this->sprite.setOrigin(this->texture.getSize().x / 2, this->texture.getSize().y / 2);
+		this->sprite.setPosition(this->shape.getPosition().x, this->shape.getPosition().y - 50);
+
 	}
 
 	void draw(sf::RenderWindow& window)
 	{
-		window.draw(shape);
-		window.draw(text);
-		window.draw(bepinex_version);
+		window.draw(this->shape);
+		//If text exists
+		window.draw(this->text);
+		window.draw(this->bepinex_version);
+		window.draw(this->sprite);
+		window.draw(this->divider1);
+	}
+
+	string toupper(string text)
+	{
+		vector<char> chars(text.begin(), text.end());
+		for (int i = 0; i < chars.size(); i++)
+		{
+			chars[i] = std::toupper(chars[i]);
+		}
+		text = string(chars.begin(), chars.end());
+		return text;
 	}
 
 	void update(string name, int bep_version, sf::Texture texture)
 	{
-		this->text.setString(name);
+		this->text.setString(toupper(DISPLAY_NAME));
 		this->bepinex_version.setString("BEPINEX " + bep_version);
 		this->texture = texture;
 	}
@@ -75,7 +101,67 @@ public:
 
 };
 
+class Button
+{
+public:
+	sf::RectangleShape shape;
+	sf::Text text;
+	sf::Font font;
+	sf::Color color;
+	sf::Color hover_color;
+	sf::Color click_color;
+	sf::Color text_color;
+	sf::Vector2f position;
 
+	Button(string text, sf::Vector2f position)
+		: text("no", font, 20)
+	{
+		this->shape = sf::RectangleShape(sf::Vector2f(250, 50));
+		this->shape.setFillColor(sf::Color(10, 10, 10, 255));
+		this->shape.setOrigin(this->shape.getSize().x / 2, this->shape.getSize().y / 2);
+		this->shape.setPosition(position);
+		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
+		this->text.setFont(font);
+		this->text.setString(text);
+		this->text.setCharacterSize(20);
+		this->text.setFillColor(sf::Color(255, 255, 255, 255));
+		this->text.setPosition(this->shape.getPosition().x - (this->text.getGlobalBounds().width / 2), this->shape.getPosition().y - (this->text.getGlobalBounds().height / 2));
+		this->color = sf::Color(30, 30, 30, 255);
+		this->hover_color = sf::Color(50, 50, 50, 255);
+		this->click_color = sf::Color(60, 60, 60, 255);
+		this->text_color = sf::Color(255, 255, 255, 255);
+		this->position = position;
+
+	}
+
+	void draw(sf::RenderWindow& window)
+	{
+		window.draw(this->shape);
+		window.draw(this->text);
+	}
+	
+	void update(sf::RenderWindow& window)
+	{
+		sf::Vector2f mouse_pos = sf::Vector2f(sf::Mouse::getPosition(window));
+		//if mouse is over button
+		if (mouse_pos.x > this->shape.getPosition().x - (this->shape.getSize().x / 2) && mouse_pos.x < this->shape.getPosition().x + (this->shape.getSize().x / 2) && mouse_pos.y > this->shape.getPosition().y - (this->shape.getSize().y / 2) && mouse_pos.y < this->shape.getPosition().y + (this->shape.getSize().y / 2))
+		{
+			this->shape.setFillColor(this->hover_color);
+			this->text.setFillColor(this->text_color);
+			//if mouse is clicked
+			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+			{
+				this->shape.setFillColor(this->click_color);
+			}
+		}
+		else
+		{
+			this->shape.setFillColor(this->color);
+			this->text.setFillColor(this->text_color);
+		}
+		
+	}
+};
 
 
 
@@ -233,7 +319,10 @@ int main()
 #pragma region VARIABLE_CREATION
 
 	vector<sf::Texture> credit_textures;
-
+	sf::Texture texture;
+	//set up texture as a blank texture
+	texture.create(1, 1);
+	
 	if (check_for_update())
 	{
 		needs_update = true;
@@ -281,7 +370,7 @@ int main()
 	//set up font
 	sf::Font font;
 	font.loadFromFile("resources/RobotoMono-Light.ttf");
-
+	MainDisplay mainDisplay = MainDisplay("DDLoader", 6, sf::Vector2f(950, 415), sf::Vector2f(1250, 720), texture);
 	//set up text
 	sf::Text program_title;
 	program_title.setFont(font);
@@ -314,6 +403,14 @@ int main()
 	header_sprite.setOrigin(header_sprite.getGlobalBounds().width / 2, header_sprite.getGlobalBounds().height / 2);
 	header_sprite.setPosition(width/2,height/2);
 
+	sf::Text sayings_text;
+	sayings_text.setFont(font);
+	sayings_text.setString(sayings[rand()%sayings.size()]);
+	sayings_text.setCharacterSize(16);
+	sayings_text.setStyle(sf::Text::Bold);
+	sayings_text.setFillColor(sf::Color::White);
+	sayings_text.setPosition(width/2-(sayings_text.getGlobalBounds().width/2), 5);
+
 	//convert changelog.txt to string
 	ifstream changelog_file;
 	changelog_file.open("changelog.txt");
@@ -325,6 +422,12 @@ int main()
 		changelog_string += "\n";
 	}
 	changelog_file.close();
+
+	vector<Button> buttons;
+	buttons.push_back(Button("HAVENDOCK", sf::Vector2f(150, 400)));
+	buttons.push_back(Button("MUCK", sf::Vector2f(150, 470)));
+	buttons.push_back(Button("HOLLOW KNIGHT", sf::Vector2f(150, 540)));
+	buttons.push_back(Button("REGIONS OF RUIN", sf::Vector2f(150, 610)));
 
 	while (running)
 	{
@@ -399,16 +502,21 @@ int main()
 				header_anim_ticker = 0;
 		}
 		header_sprite.setTexture(credit_textures[header_anim_ticker]);
-		header_sprite.setPosition(150,140);
+		header_sprite.setPosition(150,160);
 
 		window.draw(program_ui_bar);
 		window.draw(header_sprite);
 		window.draw(program_titlebar);
 		window.draw(program_close);
 		window.draw(program_title);
-		
-		
-		//draw the window
+		window.draw(sayings_text);
+		mainDisplay.draw(window);
+		mainDisplay.update("havendock", 6, texture);
+		for (int i = 0; i < buttons.size(); i++)
+		{
+			buttons[i].draw(window);
+			buttons[i].update(window);
+		}
 		window.setFramerateLimit(60);
 		window.display();
 

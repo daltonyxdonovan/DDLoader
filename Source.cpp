@@ -26,225 +26,50 @@ int substate = 0;
 int header_ticker = 0;
 int header_anim_ticker = 0;
 float version = 3.0;
+bool windowheld = false;
 bool needs_update = false;
 
-#pragma region CLASSES
-
-
-class DisplayBox
+class MainDisplay
 {
 public:
-	sf::Vector2f position;
-	sf::Vector2f size;
-	sf::Color color;
+	sf::RectangleShape shape;
 	sf::Texture texture;
-	sf::Sprite sprite;
-	sf::RectangleShape shape;
-	string title_text = "";
-	
-	bool up = false;
-	bool down = false;
-
-	int animation_step_limit = 800;
-	int animation_step_amount = 40;
-	int desired_y;
-	int original_y;
-
-	DisplayBox(sf::Vector2f position, sf::Vector2f size, sf::Color color)
-	{
-		this->position = position;
-		this->size = size;
-		this->color = color;
-		this->desired_y = position.y;
-		this->original_y = position.y;
-
-		shape.setSize(size);
-		shape.setOrigin(shape.getGlobalBounds().width / 2, shape.getGlobalBounds().height / 2);
-		shape.setFillColor(color);
-		shape.setPosition(position);
-		
-		
-	}
-
-	DisplayBox(sf::Vector2f position, sf::Vector2f size, sf::Color color, string title_text)
-	{
-		this->position = position;
-		this->size = size;
-		this->color = color;
-		this->desired_y = position.y;
-		this->original_y = position.y;
-		this->title_text = title_text;
-
-		shape.setSize(size);
-		shape.setOrigin(shape.getGlobalBounds().width / 2, shape.getGlobalBounds().height / 2);
-		shape.setFillColor(color);
-		shape.setPosition(position);
-
-
-	}
-
-	void draw(sf::RenderWindow& window, sf::Font font)
-	{
-		shape.setPosition(position);
-		shape.setSize(size);
-		shape.setOrigin(shape.getGlobalBounds().width / 2, shape.getGlobalBounds().height / 2);
-		shape.setFillColor(color);
-		window.draw(shape);
-
-		
-		sf::Text text;
-		text.setFont(font);
-		text.setString(title_text);
-		text.setCharacterSize(50);
-		text.setFillColor(sf::Color::White);
-		text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
-		text.setPosition(position.x, position.y -350);
-		text.setStyle(sf::Text::Bold);
-		window.draw(text);
-
-		if (title_text != "")
-		{
-			//make a line under the text
-			sf::RectangleShape line;
-			line.setSize(sf::Vector2f(text.getGlobalBounds().width, 5));
-			line.setFillColor(sf::Color::White);
-			line.setOrigin(line.getGlobalBounds().width / 2, line.getGlobalBounds().height / 2);
-			line.setPosition(text.getPosition().x+5, text.getPosition().y + 50);
-			window.draw(line);
-		}
-	}
-
-	void update()
-	{
-		//if y != desired_y, step once towards desired_y
-		if (position.y != desired_y)
-		{
-			if (position.y < desired_y)
-			{
-				position.y += animation_step_amount;
-			}
-			else if (position.y > desired_y)
-			{
-				position.y -= animation_step_amount;
-			}
-		}
-	}
-
-};
-
-class Button
-{
-public:
-	sf::Vector2f position;
-	sf::Vector2f size;
-	sf::Color color;
-	sf::Color hover_color;
-	sf::Color clicked_color;
-	sf::Color text_color;
-	sf::Color text_hover_color;
-	sf::Color text_clicked_color;
+	sf::Text text;
+	sf::Text bepinex_version;
 	sf::Font font;
-	bool clicked = false;
-	bool hover = false;
-	bool active = false;
-	sf::RectangleShape shape;
-	string text_string;
-	int font_size;
-	bool interactable;
 
-	Button(sf::Vector2f position, sf::Vector2f size, sf::Color color, sf::Color text_color, string text_string, int font_size, bool interactable)
+	MainDisplay(string name, int bep_version, sf::Vector2f position, sf::Vector2f size, sf::Texture texture)
 	{
-		this->position = position;
-		this->size = size;
-		this->color = color;
-		this->text_color = text_color;
-		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
-		this->text_string = text_string;
-		this->font_size = font_size;
-		this->interactable = interactable;
-		
-		shape.setSize(size);
-		shape.setOrigin(size.x / 2, size.y / 2);
-		shape.setPosition(position);
-		shape.setFillColor(color);
-		
-		//this god-awful mess is checking the current rgb of the background color and making a hover and clicked color based on that
-		hover_color = sf::Color(color.r + 50 > 255 ? 255 : color.r + 50, color.g + 50 > 255 ? 255 : color.g + 50, color.b + 50 > 255 ? 255 : color.b + 50);
-		clicked_color = sf::Color(color.r + 100 > 255 ? 255 : color.r + 100, color.g + 100 > 255 ? 255 : color.g + 100, color.b + 100 > 255 ? 255 : color.b + 100);
-		text_hover_color = sf::Color(text_color.r + 50 > 255 ? 255 : text_color.r + 50, text_color.g + 50 > 255 ? 255 : text_color.g + 50, text_color.b + 50 > 255 ? 255 : text_color.b + 50);
-		text_clicked_color = sf::Color(text_color.r + 100 > 255 ? 255 : text_color.r + 100, text_color.g + 100 > 255 ? 255 : text_color.g + 100, text_color.b + 100 > 255 ? 255 : text_color.b + 100);
-	}
-
-	void set_position(sf::Vector2f position)
-	{
-		this->position = position;
-		shape.setPosition(position);
-	}
-
-	void update(sf::RenderWindow& window)
-	{
-		sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-		sf::Vector2f mousePosF{ static_cast<float>(mousePos.x), static_cast<float>(mousePos.y) };
-		//bounds should take into account the absolute position of the button
-		sf::FloatRect bounds = sf::FloatRect(position.x-size.x/2, position.y-size.y/2, size.x, size.y);
-		clicked = false;
-		hover = false;
-
-		if (bounds.contains(mousePosF))
-		{
-			hover = true;
-			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-			{
-				clicked = true;
-				active = true;
-			}
-		}
-		else
-		{
-			active = false;
-		}
-
-		//if (!interactable) return;
-		if (clicked)
-		{
-			shape.setFillColor(clicked_color);
-		}
-		else if (hover)
-		{
-			shape.setFillColor(hover_color);
-		}
-		else
-		{
-			shape.setFillColor(color);
-		}
+		this->shape.setSize(size);
+		this->shape.setFillColor(sf::Color(50, 50, 50, 255));
+		this->shape.setOrigin(size.x / 2, size.y / 2);
+		this->shape.setPosition(position);
+		this->font.loadFromFile("resources/Roboto-Regular.ttf");
+		this->text.setFont(font);
+		this->text.setString(name);
+		this->text.setCharacterSize(20);
+		this->text.setFillColor(sf::Color(255, 255, 255, 255));
+		this->text.setPosition(shape.getPosition().x, shape.getPosition().y + (shape.getSize().y / 2 - 30));
+		this->bepinex_version.setFont(font);
+		this->bepinex_version.setString("BEPINEX " + bep_version);
+		this->bepinex_version.setCharacterSize(10);
+		this->bepinex_version.setFillColor(sf::Color(255, 255, 255, 255));
+		this->bepinex_version.setPosition(shape.getPosition().x, shape.getPosition().y + (shape.getSize().y / 2 - 50));
+		this->texture = texture;
 	}
 
 	void draw(sf::RenderWindow& window)
 	{
-		sf::Text text = sf::Text{ text_string, font };
-		text.setCharacterSize(font_size);
-		sf::Vector2f center = sf::Vector2f(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 2.f);
-		sf::Vector2f localBounds = center + sf::Vector2f(text.getLocalBounds().left, text.getLocalBounds().top);
-		text.setOrigin(localBounds);
-		text.setPosition(position);
-		text.setStyle(sf::Text::Bold);
-		if (clicked)
-		{
-			text.setFillColor(text_clicked_color);
-		}
-		else if (hover)
-		{
-			text.setFillColor(text_hover_color);
-		}
-		else
-		{
-			text.setFillColor(text_color);
-		}
-
-
 		window.draw(shape);
 		window.draw(text);
+		window.draw(bepinex_version);
+	}
 
+	void update(string name, int bep_version, sf::Texture texture)
+	{
+		this->text.setString(name);
+		this->bepinex_version.setString("BEPINEX " + bep_version);
+		this->texture = texture;
 	}
 
 
@@ -253,19 +78,8 @@ public:
 
 
 
-#pragma endregion
 
 #pragma region METHODS
-
-void remove_old_loader()
-{
-	
-	//if loader.exe exists in directory, remove it
-	if (std::filesystem::exists("loader.exe"))
-	{
-		std::filesystem::remove("loader.exe");
-	}
-}
 
 void run_command(string command)
 {
@@ -295,8 +109,6 @@ void run_command(string command)
     cout << data << endl;
     return;
 }
-
-
 
 string run_command_string(string command)
 {
@@ -332,7 +144,6 @@ void cleanup()
 	
 
 }
-
 
 bool check_for_update()
 {
@@ -396,36 +207,6 @@ void swap_vector_indexes(int index1, int index2, vector<string> sayings_vector)
 	sayings_vector[index1] = sayings_vector[index2];
 	sayings_vector[index2] = temp;
 }
-
-/*
-void maximize_window(sf::RenderWindow& window)
-{
-	if (!maximized)
-	{
-		//maximize window
-		ShowWindow(window.getSystemHandle(), SW_MAXIMIZE);
-		maximized = true;
-	}
-	else
-	{
-		//minimize window
-		ShowWindow(window.getSystemHandle(), SW_MINIMIZE);
-		maximized = false;
-	}
-	
-	
-}
-
-void reset_window(sf::RenderWindow& window)
-{
-	//reset window
-	ShowWindow(window.getSystemHandle(), SW_RESTORE);
-	maximized = false;
-}*/
-
-
-
-	
 
 #pragma endregion
 
@@ -496,42 +277,42 @@ int main()
 	{
 		swap_vector_indexes((rand() % sayings.size()), (rand() % sayings.size()), sayings);
 	}
-
 	
 	//set up font
 	sf::Font font;
 	font.loadFromFile("resources/RobotoMono-Light.ttf");
 
-	bool windowheld = false;
-	
-
-	
-	
 	//set up text
 	sf::Text program_title;
 	program_title.setFont(font);
-	program_title.setString("LOAD-R");
-	program_title.setCharacterSize(10);
+	program_title.setString("DDLoader");
+	program_title.setCharacterSize(16);
 	program_title.setStyle(sf::Text::Bold);
 	program_title.setFillColor(sf::Color::White);
-	program_title.setPosition(10,10);
+	program_title.setPosition(10,5);
+
+	sf::Text program_close;
+	program_close.setFont(font);
+	program_close.setString("X");
+	program_close.setCharacterSize(16);
+	program_close.setStyle(sf::Text::Bold);
+	program_close.setFillColor(sf::Color::White);
+	program_close.setPosition(1580, 5);
 	
 	sf::RectangleShape program_titlebar;
 	program_titlebar.setSize(sf::Vector2f(1600, 30));
-	program_titlebar.setFillColor(sf::Color(10,10,10));
+	program_titlebar.setFillColor(sf::Color(30,30,30));
 	program_titlebar.setPosition(0, 0);
 
 	sf::RectangleShape program_ui_bar;
 	program_ui_bar.setSize(sf::Vector2f(300, 800));
-	program_ui_bar.setFillColor(sf::Color(20, 20, 20));
+	program_ui_bar.setFillColor(sf::Color(40, 40, 40));
 	program_ui_bar.setPosition(0, 0);
-	
+
 	sf::Sprite header_sprite;
 	header_sprite.setTexture(credit_textures[0]);
 	header_sprite.setOrigin(header_sprite.getGlobalBounds().width / 2, header_sprite.getGlobalBounds().height / 2);
 	header_sprite.setPosition(width/2,height/2);
-
-	
 
 	//convert changelog.txt to string
 	ifstream changelog_file;
@@ -544,12 +325,6 @@ int main()
 		changelog_string += "\n";
 	}
 	changelog_file.close();
-
-	
-
-	
-
-#pragma endregion
 
 	while (running)
 	{
@@ -574,7 +349,10 @@ int main()
 						//check if mouse is within 50px of the right of the window
 						if (sf::Mouse::getPosition(window).x > window.getSize().x - 50)
 						{
-							
+							//free memory and close window
+							std::atexit(cleanup);
+							running = false;
+							window.close();
 						}
 						else
 						{
@@ -611,7 +389,7 @@ int main()
 		
 #pragma region DISPLAY_LOOP
 		//clear the window
-		window.clear();
+		window.clear(sf::Color(50,50,50));
 		header_ticker++;
 		if (header_ticker > 1)
 		{
@@ -621,11 +399,12 @@ int main()
 				header_anim_ticker = 0;
 		}
 		header_sprite.setTexture(credit_textures[header_anim_ticker]);
-		header_sprite.setPosition(width/2,height/2);
+		header_sprite.setPosition(150,140);
 
 		window.draw(program_ui_bar);
 		window.draw(header_sprite);
 		window.draw(program_titlebar);
+		window.draw(program_close);
 		window.draw(program_title);
 		
 		

@@ -147,8 +147,9 @@ public:
 	string DISPLAY_NAME;
 	int function_number;
 	int bep_version;
+	bool active;
 
-	Button(string text, sf::Vector2f position, int function_number, int bep_version) :
+	Button(string text, sf::Vector2f position, int function_number, int bep_version, bool active = true) :
 		shape(sf::Vector2f(250, 50)),
 		font{},
 		text{ text,font,20 },
@@ -177,9 +178,10 @@ public:
 		this->DISPLAY_NAME = text;
 		this->function_number = function_number;
 		this->bep_version = bep_version;
+		this->active = true;
 	}
 
-	Button(sf::Texture &image, sf::Vector2f position, int function_number) :
+	Button(sf::Texture& image, sf::Vector2f position, int function_number, bool active = true) :
 		shape(sf::Vector2f(250, 50)),
 		font{},
 		text{ "",font,20 },
@@ -208,6 +210,7 @@ public:
 		this->DISPLAY_NAME = "";
 		this->function_number = function_number;
 		this->bep_version = bep_version;
+		this->active = true;
 	}
 
 	void draw(sf::RenderWindow& window)
@@ -244,6 +247,14 @@ public:
 		cout << data << endl;
 		return;
 	}
+
+	bool is_dll_installed(string dll, string directory)
+	{
+		string path = directory + "\\" + dll + ".dll";
+		ifstream file(path);
+		return file.good();
+	}
+
 
 	bool is_bep_installed(string directory)
 	{

@@ -745,10 +745,10 @@ int main()
 		{
 		case(0):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock") ||
-				is_bep_installed("D:/Steam/steamapps/common/Havendock") ||
-				is_bep_installed("E:/Steam/steamapps/common/Havendock") ||
-				is_bep_installed("F:/Steam/steamapps/common/Havendock") ||
-				is_bep_installed("G:/Steam/steamapps/common/Havendock"))
+				is_bep_installed("D:/SteamLibrary/steamapps/common/Havendock") ||
+				is_bep_installed("E:/SteamLibrary/steamapps/common/Havendock") ||
+				is_bep_installed("F:/SteamLibrary/steamapps/common/Havendock") ||
+				is_bep_installed("G:/SteamLibrary/steamapps/common/Havendock"))
 			{
 				bep_installed_text.setString("BepInEx Installed");
 				bep_installed_text.setFillColor(sf::Color::Green);
@@ -766,10 +766,10 @@ int main()
 			}
 		case(1):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Muck") ||
-				is_bep_installed("D:/Steam/steamapps/common/Muck") ||
-				is_bep_installed("E:/Steam/steamapps/common/Muck") ||
-				is_bep_installed("F:/Steam/steamapps/common/Muck") ||
-				is_bep_installed("G:/Steam/steamapps/common/Muck"))
+				is_bep_installed("D:/SteamLibrary/steamapps/common/Muck") ||
+				is_bep_installed("E:/SteamLibrary/steamapps/common/Muck") ||
+				is_bep_installed("F:/SteamLibrary/steamapps/common/Muck") ||
+				is_bep_installed("G:/SteamLibrary/steamapps/common/Muck"))
 			{
 				bep_installed_text.setString("BepInEx Installed");
 				bep_installed_text.setFillColor(sf::Color::Green);
@@ -787,10 +787,10 @@ int main()
 			}
 		case(2):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight") ||
-				is_bep_installed("D:/Steam/steamapps/common/Hollow Knight") ||
-				is_bep_installed("E:/Steam/steamapps/common/Hollow Knight") ||
-				is_bep_installed("F:/Steam/steamapps/common/Hollow Knight") ||
-				is_bep_installed("G:/Steam/steamapps/common/Hollow Knight"))
+				is_bep_installed("D:/SteamLibrary/steamapps/common/Hollow Knight") ||
+				is_bep_installed("E:/SteamLibrary/steamapps/common/Hollow Knight") ||
+				is_bep_installed("F:/SteamLibrary/steamapps/common/Hollow Knight") ||
+				is_bep_installed("G:/SteamLibrary/steamapps/common/Hollow Knight"))
 			{
 				bep_installed_text.setString("BepInEx Installed");
 				bep_installed_text.setFillColor(sf::Color::Green);
@@ -808,10 +808,10 @@ int main()
 			}
 		case(3):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin") ||
-				is_bep_installed("D:/Steam/steamapps/common/Regions of Ruin") ||
-				is_bep_installed("E:/Steam/steamapps/common/Regions of Ruin") ||
-				is_bep_installed("F:/Steam/steamapps/common/Regions of Ruin") ||
-				is_bep_installed("G:/Steam/steamapps/common/Regions of Ruin"))
+				is_bep_installed("D:/SteamLibrary/steamapps/common/Regions of Ruin") ||
+				is_bep_installed("E:/SteamLibrary/steamapps/common/Regions of Ruin") ||
+				is_bep_installed("F:/SteamLibrary/steamapps/common/Regions of Ruin") ||
+				is_bep_installed("G:/SteamLibrary/steamapps/common/Regions of Ruin"))
 			{
 				bep_installed_text.setString("BepInEx Installed");
 				bep_installed_text.setFillColor(sf::Color::Green);

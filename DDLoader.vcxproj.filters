@@ -27,4 +27,7 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="build.sh" />
+  </ItemGroup>
 </Project>

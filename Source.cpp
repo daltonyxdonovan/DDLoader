@@ -141,11 +141,12 @@ public:
 	sf::Color click_color;
 	sf::Color text_color;
 	sf::Vector2f position;
+	sf::Texture buttonTexture;
 	string DISPLAY_NAME;
 	int function_number;
 	int bep_version;
 
-	Button(string text, sf::Vector2f position, int function_number, int bep_version):
+	Button(string text, sf::Vector2f position, int function_number, int bep_version) :
 		shape(sf::Vector2f(250, 50)),
 		font{},
 		text{ text,font,20 },
@@ -176,12 +177,87 @@ public:
 		this->bep_version = bep_version;
 	}
 
+	Button(sf::Texture &image, sf::Vector2f position, int function_number) :
+		shape(sf::Vector2f(250, 50)),
+		font{},
+		text{ "",font,20 },
+		color{ 30, 30, 30, 255 },
+		hover_color{ 50, 50, 50, 255 },
+		click_color{ 60, 60, 60, 255 },
+		text_color{ 255, 255, 255, 255 },
+		position(position)
+	{
+		this->shape = sf::RectangleShape(sf::Vector2f(250, 50));
+		this->buttonTexture = image;
+		this->shape.setTexture(&this->buttonTexture);
+		this->shape.setOrigin(this->shape.getSize().x / 2, this->shape.getSize().y / 2);
+		this->shape.setPosition(position);
+		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
+		this->text.setFont(font);
+		this->text.setString("");
+		this->text.setCharacterSize(20);
+		this->text.setFillColor(sf::Color(255, 255, 255, 255));
+		this->text.setPosition(this->shape.getPosition().x - (this->text.getGlobalBounds().width / 2), this->shape.getPosition().y - (this->text.getGlobalBounds().height / 2));
+		this->color = sf::Color(255, 255, 255, 255);
+		this->hover_color = sf::Color(255, 255, 255, 230);
+		this->click_color = sf::Color(255, 255, 255, 200);
+		this->text_color = sf::Color(255, 255, 255, 255);
+		this->position = position;
+		this->DISPLAY_NAME = "";
+		this->function_number = function_number;
+		this->bep_version = bep_version;
+	}
+
 	void draw(sf::RenderWindow& window)
 	{
 		window.draw(this->shape);
 		window.draw(this->text);
 	}
-	
+
+	void run_command(string command)
+	{
+		string data;
+		FILE* stream;
+		const int max_buffer = 256;
+		char buffer[max_buffer];
+		command.append(" 2>&1");
+
+#ifdef _WIN32
+		stream = _popen(command.c_str(), "r");
+#else
+		stream = popen(command.c_str(), "r");
+#endif
+
+		if (stream)
+		{
+			while (!feof(stream))
+				if (fgets(buffer, max_buffer, stream) != NULL) data.append(buffer);
+#ifdef _WIN32
+			_pclose(stream);
+#else
+			pclose(stream);
+#endif
+		}
+
+		cout << data << endl;
+		return;
+	}
+
+	bool is_bep_installed(string directory)
+	{
+		//if there is a folder named bepinex in the directory, return true.
+		//else return false.
+		if (filesystem::exists(directory + "/BepInEx"))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+		
+	}
+
 	void update(sf::RenderWindow& window, MainDisplay& mainDisplay)
 	{
 		sf::Vector2f mouse_pos = sf::Vector2f(sf::Mouse::getPosition(window));
@@ -194,9 +270,13 @@ public:
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
 				this->shape.setFillColor(this->click_color);
-
+				string command = "";
 				switch(function_number)
 				{
+					case(-1):
+						command = "start https://discord.gg/daMWV3TTea";
+						run_command(command);
+						break;
 					case(0):
 						mainDisplay.setName("havendock");
 						mainDisplay.bep_version = 6;
@@ -502,6 +582,18 @@ int main()
 	titlename.setOrigin(titlename.getGlobalBounds().width / 2, titlename.getGlobalBounds().height / 2);
 	titlename.setPosition(150, 280);
 
+	sf::Text credit_text;
+	credit_text.setFont(font);
+	credit_text.setString("<3 daltonyx");
+	credit_text.setCharacterSize(16);
+	credit_text.setStyle(sf::Text::Bold);
+	credit_text.setFillColor(sf::Color::White);
+	credit_text.setOrigin(credit_text.getGlobalBounds().width / 2, credit_text.getGlobalBounds().height / 2);
+	credit_text.setPosition(width - (credit_text.getGlobalBounds().width / 2 + 12),height-16);
+
+	sf::Texture discord_texture;
+	discord_texture.loadFromFile("resources/images/discord.png");
+
 	//convert changelog.txt to string
 	ifstream changelog_file;
 	changelog_file.open("changelog.txt");
@@ -516,11 +608,11 @@ int main()
 
 	//create game buttons
 	vector<Button> buttons;
+	Button discord = Button(discord_texture, sf::Vector2f(150, 360), -1);
 	Button button1 = Button("HAVENDOCK", sf::Vector2f(150, 500+40),0,6);
 	Button button2 = Button("MUCK", sf::Vector2f(150, 570+40),1,6);
 	Button button3 = Button("HOLLOW KNIGHT", sf::Vector2f(150, 640+40),2,6);
 	Button button4 = Button("REGIONS OF RUIN", sf::Vector2f(150, 710+40),3,5);
-
 
 	//make sure we're actually zero-ed out in state
 	mainDisplay.setName("havendock");
@@ -611,14 +703,17 @@ int main()
 		window.draw(sayings_text);
 		mainDisplay.draw(window);
 		window.draw(titlename);
+		window.draw(credit_text);
 		button1.draw(window);
 		button2.draw(window);
 		button3.draw(window);
 		button4.draw(window);
+		discord.draw(window);
 		//display the window
 		button1.update(window, mainDisplay);
 		button2.update(window, mainDisplay);
 		button3.update(window, mainDisplay);
+		discord.update(window, mainDisplay);
 		mainDisplay.update("havendock");
 		button4.update(window, mainDisplay);
 		window.setFramerateLimit(60);

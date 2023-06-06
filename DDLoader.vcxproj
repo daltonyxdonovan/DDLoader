@@ -152,6 +152,9 @@
     <Image Include="Icon.ico" />
     <Image Include="Icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="build.sh" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

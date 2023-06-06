@@ -638,6 +638,8 @@ int main()
 	//create game buttons
 	vector<Button> buttons;
 	Button discord = Button(discord_texture, sf::Vector2f(150, 360), -1);
+	Button bep_install = Button("INSTALL", sf::Vector2f(580, 650), -2, 6);
+	Button bep_uninstall = Button("UNINSTALL", sf::Vector2f(580, 710), -3, 6);
 	Button button1 = Button("HAVENDOCK", sf::Vector2f(150, 500+40),0,6);
 	Button button2 = Button("MUCK", sf::Vector2f(150, 570+40),1,6);
 	Button button3 = Button("HOLLOW KNIGHT", sf::Vector2f(150, 640+40),2,6);
@@ -828,7 +830,10 @@ int main()
 		
 
 		}
-
+		bep_install.draw(window);
+		bep_uninstall.draw(window);
+		bep_install.update(window, mainDisplay);
+		bep_uninstall.update(window, mainDisplay);
 		window.draw(bep_installed_text);
 		//display the window
 		button1.update(window, mainDisplay);

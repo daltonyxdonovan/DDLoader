@@ -7,3 +7,5 @@ path = os.path.join(os.getenv('PROGRAMFILES(X86)'), 'Steam', 'steamapps', 'commo
 print("extracting the bepinex.zip to plugins folder\n")
 with zipfile.ZipFile('bepinex.zip', 'r') as zip_ref:
     zip_ref.extractall(path)
+
+    

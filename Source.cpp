@@ -46,6 +46,7 @@ public:
 	sf::RectangleShape divider2;
 	sf::Vector2f text_position;
 	int bep_version;
+	int function_last_used;
 	
 	MainDisplay(string name, int bep_version, sf::Vector2f position, sf::Vector2f size, sf::Texture texture)
 		: text("<game_name>", font, 30), bepinex_version("BEPINEX 6", font, 10)
@@ -76,6 +77,7 @@ public:
 		this->sprite.setOrigin(this->texture.getSize().x / 2, this->texture.getSize().y / 2);
 		this->sprite.setPosition(this->shape.getPosition().x, this->shape.getPosition().y - 50);
 		this->bep_version = 6;
+		this->function_last_used = 0;
 	}
 
 	void draw(sf::RenderWindow& window)
@@ -281,21 +283,25 @@ public:
 						mainDisplay.setName("havendock");
 						mainDisplay.bep_version = 6;
 						mainDisplay.texture.loadFromFile("resources/images/havendock.png");
+						mainDisplay.function_last_used = 0;
 						break;
 					case(1):
 						mainDisplay.setName("muck");
 						mainDisplay.bep_version = 6;
 						mainDisplay.texture.loadFromFile("resources/images/muck.png");
+						mainDisplay.function_last_used = 1;
 						break;
 					case(2):
 						mainDisplay.setName("hollow knight");
 						mainDisplay.bep_version = 6;
 						mainDisplay.texture.loadFromFile("resources/images/hollowknight.png");
+						mainDisplay.function_last_used = 2;
 						break;
 					case(3):
 						mainDisplay.setName("regions of ruin");
 						mainDisplay.bep_version = 5;
 						mainDisplay.texture.loadFromFile("resources/images/regionsofruin.png");
+						mainDisplay.function_last_used = 3;
 						break;
 					default:
 						mainDisplay.setName("error");
@@ -317,7 +323,20 @@ public:
 	}
 };
 
+bool is_bep_installed(string directory)
+{
+	//if there is a folder named bepinex in the directory, return true.
+	//else return false.
+	if (filesystem::exists(directory + "/BepInEx"))
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 
+}
 
 #pragma region METHODS
 
@@ -591,6 +610,16 @@ int main()
 	credit_text.setOrigin(credit_text.getGlobalBounds().width / 2, credit_text.getGlobalBounds().height / 2);
 	credit_text.setPosition(width - (credit_text.getGlobalBounds().width / 2 + 12),height-16);
 
+	sf::Text bep_installed_text;
+	bep_installed_text.setFont(font);
+	bep_installed_text.setCharacterSize(16);
+	bep_installed_text.setStyle(sf::Text::Bold);
+	bep_installed_text.setString("BepInEx Installed");
+	bep_installed_text.setFillColor(sf::Color::Green);
+	bep_installed_text.setOrigin(bep_installed_text.getGlobalBounds().width / 2, bep_installed_text.getGlobalBounds().height / 2);
+	bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y+75);
+
+
 	sf::Texture discord_texture;
 	discord_texture.loadFromFile("resources/images/discord.png");
 
@@ -709,6 +738,98 @@ int main()
 		button3.draw(window);
 		button4.draw(window);
 		discord.draw(window);
+
+		switch (mainDisplay.function_last_used)
+		{
+		case(0):
+			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock") ||
+				is_bep_installed("D:/Steam/steamapps/common/Havendock") ||
+				is_bep_installed("E:/Steam/steamapps/common/Havendock") ||
+				is_bep_installed("F:/Steam/steamapps/common/Havendock") ||
+				is_bep_installed("G:/Steam/steamapps/common/Havendock"))
+			{
+				bep_installed_text.setString("BepInEx Installed");
+				bep_installed_text.setFillColor(sf::Color::Green);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+			else
+			{
+				bep_installed_text.setString("BepInEx Not Installed");
+				bep_installed_text.setFillColor(sf::Color::Red);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+		case(1):
+			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Muck") ||
+				is_bep_installed("D:/Steam/steamapps/common/Muck") ||
+				is_bep_installed("E:/Steam/steamapps/common/Muck") ||
+				is_bep_installed("F:/Steam/steamapps/common/Muck") ||
+				is_bep_installed("G:/Steam/steamapps/common/Muck"))
+			{
+				bep_installed_text.setString("BepInEx Installed");
+				bep_installed_text.setFillColor(sf::Color::Green);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+			else
+			{
+				bep_installed_text.setString("BepInEx Not Installed");
+				bep_installed_text.setFillColor(sf::Color::Red);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+		case(2):
+			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight") ||
+				is_bep_installed("D:/Steam/steamapps/common/Hollow Knight") ||
+				is_bep_installed("E:/Steam/steamapps/common/Hollow Knight") ||
+				is_bep_installed("F:/Steam/steamapps/common/Hollow Knight") ||
+				is_bep_installed("G:/Steam/steamapps/common/Hollow Knight"))
+			{
+				bep_installed_text.setString("BepInEx Installed");
+				bep_installed_text.setFillColor(sf::Color::Green);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+			else
+			{
+				bep_installed_text.setString("BepInEx Not Installed");
+				bep_installed_text.setFillColor(sf::Color::Red);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+		case(3):
+			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin") ||
+				is_bep_installed("D:/Steam/steamapps/common/Regions of Ruin") ||
+				is_bep_installed("E:/Steam/steamapps/common/Regions of Ruin") ||
+				is_bep_installed("F:/Steam/steamapps/common/Regions of Ruin") ||
+				is_bep_installed("G:/Steam/steamapps/common/Regions of Ruin"))
+			{
+				bep_installed_text.setString("BepInEx Installed");
+				bep_installed_text.setFillColor(sf::Color::Green);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+			else
+			{
+				bep_installed_text.setString("BepInEx Not Installed");
+				bep_installed_text.setFillColor(sf::Color::Red);
+				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
+				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
+				break;
+			}
+		
+
+		}
+
+		window.draw(bep_installed_text);
 		//display the window
 		button1.update(window, mainDisplay);
 		button2.update(window, mainDisplay);

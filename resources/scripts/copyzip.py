@@ -30,7 +30,6 @@ if destination == "-C":
 if not os.path.isabs(source):
     source = os.path.join(os.getcwd(), source)
 
-
 print("extracting '" + source + "' to '" + destination + "'\n")
 
 with zipfile.ZipFile(source, 'r') as zip_ref:

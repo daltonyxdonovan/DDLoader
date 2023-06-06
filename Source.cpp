@@ -407,7 +407,7 @@ public:
 							break;
 						case(3):
 							if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions Of Ruin"))
-								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip -C Regions";
+								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip - C Regions";
 							if (is_bep_installed("D:/SteamLibrary/steamapps/common/Regions Of Ruin"))
 								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip D:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins Regions";
 							if (is_bep_installed("E:/SteamLibrary/steamapps/common/Regions Of Ruin"))
@@ -416,7 +416,8 @@ public:
 								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip F:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins Regions";
 							if (is_bep_installed("G:/SteamLibrary/steamapps/common/Regions Of Ruin"))
 								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip G:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins Regions";
-
+							run_command(command);
+							break;
 						}
 						break;
 					case(-3):
@@ -1159,11 +1160,11 @@ int main()
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
 			}
 			//check for RegionsOfRuin_ConsoleCommands.dll
-			if (is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
-				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "D:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
-				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "E:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
-				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "F:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
-				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "G:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins"))
+			if (is_dll_installed("ConsoleCommands.dll", "C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "D:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "E:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "F:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "G:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins"))
 			{
 				console_commands_text.setString("CONSOLE COMMANDS Installed!");
 				console_commands_text.setFillColor(sf::Color::Green);

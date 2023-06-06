@@ -11,6 +11,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <cstring>
+#include <functional>
+#include <Windows.h>
+
 
 //i know, i know, i shouldnt use namespace std due to naming collisions, but i dont care and it's useful on a solo project
 using namespace std;
@@ -30,6 +33,8 @@ bool needs_update = false;
 
 class MainDisplay
 {
+private:
+	string DISPLAY_NAME = "havendock";
 public:
 	sf::RectangleShape shape;
 	sf::Texture texture;
@@ -39,10 +44,11 @@ public:
 	sf::Sprite sprite;
 	sf::RectangleShape divider1;
 	sf::RectangleShape divider2;
-	string DISPLAY_NAME = "havendock";
-
+	sf::Vector2f text_position;
+	int bep_version;
+	
 	MainDisplay(string name, int bep_version, sf::Vector2f position, sf::Vector2f size, sf::Texture texture)
-		: text("<game_name>", font, 20), bepinex_version("BEPINEX " + bep_version, font, 10)
+		: text("<game_name>", font, 30), bepinex_version("BEPINEX 6", font, 10)
 	{
 		this->shape.setSize(size);
 		this->shape.setFillColor(sf::Color(40, 40, 40, 255));
@@ -55,19 +61,21 @@ public:
 		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
 		this->text.setFont(font);
 		this->text.setString("noodles");
-		this->text.setCharacterSize(20);
+		this->text.setCharacterSize(30);
+		this->text.setStyle(sf::Text::Bold);
 		this->text.setFillColor(sf::Color(255, 255, 255, 255));
-		this->text.setPosition(shape.getPosition().x-380-(text.getGlobalBounds().width/2), shape.getPosition().y);
+		this->text_position = sf::Vector2f((shape.getPosition().x - 363), shape.getPosition().y);
+		this->text.setPosition(sf::Vector2f(text_position.x - text.getGlobalBounds().width / 2, text_position.y));
 		this->bepinex_version.setFont(font);
-		this->bepinex_version.setString("BEPINEX " + bep_version);
-		this->bepinex_version.setCharacterSize(10);
+		this->bepinex_version.setString("BEPINEX " + to_string(bep_version));
+		this->bepinex_version.setCharacterSize(15);
 		this->bepinex_version.setFillColor(sf::Color(255, 255, 255, 255));
 		this->bepinex_version.setPosition(shape.getPosition().x, shape.getPosition().y + (shape.getSize().y / 2 - 50));
 		this->texture = texture;
 		this->sprite.setTexture(this->texture);
 		this->sprite.setOrigin(this->texture.getSize().x / 2, this->texture.getSize().y / 2);
 		this->sprite.setPosition(this->shape.getPosition().x, this->shape.getPosition().y - 50);
-
+		this->bep_version = 6;
 	}
 
 	void draw(sf::RenderWindow& window)
@@ -91,11 +99,32 @@ public:
 		return text;
 	}
 
-	void update(string name, int bep_version, sf::Texture texture)
+	void setName(std::string given_name) {
+		this->DISPLAY_NAME = given_name;
+	}
+	std::string getName() const {
+		return DISPLAY_NAME;
+	}
+
+
+	void Log(string message)
 	{
+		cout << message + "::" << endl;
+		std::wstring wide_message(message.begin(), message.end());
+		LPCWSTR long_message = wide_message.c_str();
+		OutputDebugString(long_message);
+	}
+
+	void update(string name)
+	{
+		//Log(DISPLAY_NAME);
 		this->text.setString(toupper(DISPLAY_NAME));
-		this->bepinex_version.setString("BEPINEX " + bep_version);
-		this->texture = texture;
+		this->bepinex_version.setString("BEPINEX " + to_string(this->bep_version));
+		this->text.setPosition(sf::Vector2f(this->text_position.x - this->text.getGlobalBounds().width / 2, this->text_position.y+5));
+		this->bepinex_version.setPosition(sf::Vector2f(this->text_position.x - this->bepinex_version.getGlobalBounds().width / 2, this->text_position.y+45));
+		this->sprite.setOrigin(sprite.getGlobalBounds().width / 2, sprite.getGlobalBounds().height / 2);
+		this->sprite.setPosition(sf::Vector2f(text_position.x, text_position.y - 175));
+		//this->texture = texture;
 	}
 
 
@@ -112,17 +141,28 @@ public:
 	sf::Color click_color;
 	sf::Color text_color;
 	sf::Vector2f position;
+	string DISPLAY_NAME;
+	int function_number;
+	int bep_version;
 
-	Button(string text, sf::Vector2f position)
-		: text("no", font, 20)
+	Button(string text, sf::Vector2f position, int function_number, int bep_version):
+		shape(sf::Vector2f(250, 50)),
+		font{},
+		text{ text,font,20 },
+		color{ 30, 30, 30, 255 },
+		hover_color{ 50, 50, 50, 255 },
+		click_color{ 60, 60, 60, 255 },
+		text_color{ 255, 255, 255, 255 },
+		position(position)
 	{
+
 		this->shape = sf::RectangleShape(sf::Vector2f(250, 50));
 		this->shape.setFillColor(sf::Color(10, 10, 10, 255));
 		this->shape.setOrigin(this->shape.getSize().x / 2, this->shape.getSize().y / 2);
 		this->shape.setPosition(position);
 		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
 		this->text.setFont(font);
-		this->text.setString(text);
+		this->text.setString("no");
 		this->text.setCharacterSize(20);
 		this->text.setFillColor(sf::Color(255, 255, 255, 255));
 		this->text.setPosition(this->shape.getPosition().x - (this->text.getGlobalBounds().width / 2), this->shape.getPosition().y - (this->text.getGlobalBounds().height / 2));
@@ -131,7 +171,9 @@ public:
 		this->click_color = sf::Color(60, 60, 60, 255);
 		this->text_color = sf::Color(255, 255, 255, 255);
 		this->position = position;
-
+		this->DISPLAY_NAME = text;
+		this->function_number = function_number;
+		this->bep_version = bep_version;
 	}
 
 	void draw(sf::RenderWindow& window)
@@ -140,7 +182,7 @@ public:
 		window.draw(this->text);
 	}
 	
-	void update(sf::RenderWindow& window)
+	void update(sf::RenderWindow& window, MainDisplay& mainDisplay)
 	{
 		sf::Vector2f mouse_pos = sf::Vector2f(sf::Mouse::getPosition(window));
 		//if mouse is over button
@@ -152,6 +194,34 @@ public:
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
 				this->shape.setFillColor(this->click_color);
+
+				switch(function_number)
+				{
+					case(0):
+						mainDisplay.setName("havendock");
+						mainDisplay.bep_version = 6;
+						mainDisplay.texture.loadFromFile("resources/images/havendock.png");
+						break;
+					case(1):
+						mainDisplay.setName("muck");
+						mainDisplay.bep_version = 6;
+						mainDisplay.texture.loadFromFile("resources/images/muck.png");
+						break;
+					case(2):
+						mainDisplay.setName("hollow knight");
+						mainDisplay.bep_version = 6;
+						mainDisplay.texture.loadFromFile("resources/images/hollowknight.png");
+						break;
+					case(3):
+						mainDisplay.setName("regions of ruin");
+						mainDisplay.bep_version = 5;
+						mainDisplay.texture.loadFromFile("resources/images/regionsofruin.png");
+						break;
+					default:
+						mainDisplay.setName("error");
+						mainDisplay.bep_version = 6;
+				}
+
 			}
 		}
 		else
@@ -160,6 +230,10 @@ public:
 			this->text.setFillColor(this->text_color);
 		}
 		
+		this->text.setString(this->DISPLAY_NAME);
+		//make sure the text is centered in the button
+		this->text.setOrigin(text.getGlobalBounds().width / 2, text.getGlobalBounds().height / 2);
+		this->text.setPosition(this->position.x, this->position.y);
 	}
 };
 
@@ -294,6 +368,36 @@ void swap_vector_indexes(int index1, int index2, vector<string> sayings_vector)
 	sayings_vector[index2] = temp;
 }
 
+void populate_sayings(vector<string>& sayings)
+{
+	sayings.push_back("we are totem");
+	sayings.push_back("spood beest");
+	sayings.push_back("gassytexan loves bigfoot");
+	sayings.push_back("ba dum tiss");
+	sayings.push_back("boganisanerd");
+	sayings.push_back("potato patreason");
+	sayings.push_back("is it data or data");
+	sayings.push_back("wallaby is a banned word");
+	sayings.push_back("walla walla washington");
+	sayings.push_back("willy bum bum");
+	sayings.push_back("a cop needed my mouse");
+	sayings.push_back("do ya got any sayings");
+	sayings.push_back("two stevens walk into a bar");
+	sayings.push_back("and they say ouch");
+	sayings.push_back("no lol");
+	sayings.push_back("we're gonna need a bigger boat");
+	sayings.push_back("welp, that's grounded");
+	sayings.push_back("daltonyx, the dandelion hunter");
+	sayings.push_back("Oh, you're finally awake!");
+	sayings.push_back("noot, noot never changes");
+	sayings.push_back("this is an uwu free zone");
+	sayings.push_back("uwu");
+	sayings.push_back("well i'm no car scientist but-");
+	sayings.push_back("i think that's just a mechanic");
+	sayings.push_back("try out Havendock!");
+	sayings.push_back("man, i really need some more sayings, don't i?.");
+}
+
 #pragma endregion
 
 
@@ -320,14 +424,17 @@ int main()
 
 	vector<sf::Texture> credit_textures;
 	sf::Texture texture;
-	//set up texture as a blank texture
-	texture.create(1, 1);
+	texture.loadFromFile("resources/images/hollowknight.png");
+	sf::Font font;
+	font.loadFromFile("resources/RobotoMono-Light.ttf");
 	
+	//check for an update, and handle accordingly
 	if (check_for_update())
 	{
 		needs_update = true;
 	}
 
+	//add images for logo
 	for (int i = 0; i < 90; i++)
 	{
 		sf::Texture texture;
@@ -335,42 +442,17 @@ int main()
 		credit_textures.push_back(texture);
 	}
 
+	//create vector of sayings for titlebar
 	vector<string> sayings;
-	sayings.push_back("we are totem");
-	sayings.push_back("spood beest");
-	sayings.push_back("gassytexan loves big feet");
-	sayings.push_back("ba dum tiss");
-	sayings.push_back("boganisanerd");
-	sayings.push_back("potato patreason");
-	sayings.push_back("is it data or data");
-	sayings.push_back("wallaby is a banned word");
-	sayings.push_back("walla walla washington");
-	sayings.push_back("willy bum bum");
-	sayings.push_back("a cop needed my mouse");
-	sayings.push_back("do ya got any sayings");
-	sayings.push_back("two stevens walk into a bar");
-	sayings.push_back("and they say ouch");
-	sayings.push_back("no lol");
-	sayings.push_back("we're gonna need a bigger boat");
-	sayings.push_back("welp, that's grounded");
-	sayings.push_back("daltonyx, the dandelion hunter");
-	sayings.push_back("Oh, you're finally awake");
-	sayings.push_back("noot, noot never changes");
-	sayings.push_back("this is an uwu free zone");
-	sayings.push_back("uwu");
-	sayings.push_back("well i'm no car scientist but-");
-	sayings.push_back("i think that's just a mechanic");
-
-	//shuffle sayings vector
+	populate_sayings(sayings);
 	for (int i = 0; i < sayings.size(); i++)
 	{
 		swap_vector_indexes((rand() % sayings.size()), (rand() % sayings.size()), sayings);
 	}
 	
-	//set up font
-	sf::Font font;
-	font.loadFromFile("resources/RobotoMono-Light.ttf");
 	MainDisplay mainDisplay = MainDisplay("DDLoader", 6, sf::Vector2f(950, 415), sf::Vector2f(1250, 720), texture);
+
+
 	//set up text
 	sf::Text program_title;
 	program_title.setFont(font);
@@ -411,6 +493,15 @@ int main()
 	sayings_text.setFillColor(sf::Color::White);
 	sayings_text.setPosition(width/2-(sayings_text.getGlobalBounds().width/2), 5);
 
+	sf::Text titlename;
+	titlename.setFont(font);
+	titlename.setString("DDLoader");
+	titlename.setCharacterSize(40);
+	titlename.setStyle(sf::Text::Bold);
+	titlename.setFillColor(sf::Color::White);
+	titlename.setOrigin(titlename.getGlobalBounds().width / 2, titlename.getGlobalBounds().height / 2);
+	titlename.setPosition(150, 280);
+
 	//convert changelog.txt to string
 	ifstream changelog_file;
 	changelog_file.open("changelog.txt");
@@ -423,12 +514,20 @@ int main()
 	}
 	changelog_file.close();
 
+	//create game buttons
 	vector<Button> buttons;
-	buttons.push_back(Button("HAVENDOCK", sf::Vector2f(150, 400)));
-	buttons.push_back(Button("MUCK", sf::Vector2f(150, 470)));
-	buttons.push_back(Button("HOLLOW KNIGHT", sf::Vector2f(150, 540)));
-	buttons.push_back(Button("REGIONS OF RUIN", sf::Vector2f(150, 610)));
+	Button button1 = Button("HAVENDOCK", sf::Vector2f(150, 500+40),0,6);
+	Button button2 = Button("MUCK", sf::Vector2f(150, 570+40),1,6);
+	Button button3 = Button("HOLLOW KNIGHT", sf::Vector2f(150, 640+40),2,6);
+	Button button4 = Button("REGIONS OF RUIN", sf::Vector2f(150, 710+40),3,5);
 
+
+	//make sure we're actually zero-ed out in state
+	mainDisplay.setName("havendock");
+	mainDisplay.bep_version = 6;
+	mainDisplay.texture.loadFromFile("resources/images/havendock.png");
+
+#pragma endregion
 	while (running)
 	{
 
@@ -511,12 +610,17 @@ int main()
 		window.draw(program_title);
 		window.draw(sayings_text);
 		mainDisplay.draw(window);
-		mainDisplay.update("havendock", 6, texture);
-		for (int i = 0; i < buttons.size(); i++)
-		{
-			buttons[i].draw(window);
-			buttons[i].update(window);
-		}
+		window.draw(titlename);
+		button1.draw(window);
+		button2.draw(window);
+		button3.draw(window);
+		button4.draw(window);
+		//display the window
+		button1.update(window, mainDisplay);
+		button2.update(window, mainDisplay);
+		button3.update(window, mainDisplay);
+		mainDisplay.update("havendock");
+		button4.update(window, mainDisplay);
 		window.setFramerateLimit(60);
 		window.display();
 

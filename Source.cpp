@@ -407,7 +407,7 @@ public:
 							break;
 						case(3):
 							if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions Of Ruin"))
-								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip - C Regions";
+								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip -C Regions";
 							if (is_bep_installed("D:/SteamLibrary/steamapps/common/Regions Of Ruin"))
 								command = "python resources/scripts/copyzip.py regionsofruin\\ConsoleCommands.zip D:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins Regions";
 							if (is_bep_installed("E:/SteamLibrary/steamapps/common/Regions Of Ruin"))

@@ -14,17 +14,12 @@
 #include <functional>
 #include <Windows.h>
 
-
 //i know, i know, i shouldnt use namespace std due to naming collisions, but i dont care and it's useful on a solo project
 using namespace std;
 
 //variables
-int width{ 1600 };
-int height{ 800 };
-string username;
-bool maximized = false;
-int state = 0;
-int substate = 0;
+const int width{ 1600 };
+const int height{ 800 };
 int header_ticker = 0;
 int header_anim_ticker = 0;
 float version = 3.0;
@@ -375,6 +370,9 @@ public:
 	}
 };
 
+
+#pragma region METHODS
+
 void Log(string message)
 {
 	cout << message + "::" << endl;
@@ -397,8 +395,6 @@ bool is_bep_installed(string directory)
 	}
 
 }
-
-#pragma region METHODS
 
 void run_command(string command)
 {

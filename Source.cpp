@@ -654,6 +654,15 @@ int main()
 	titlename.setOrigin(titlename.getGlobalBounds().width / 2, titlename.getGlobalBounds().height / 2);
 	titlename.setPosition(150, 280);
 
+	sf::Text discord_text;
+	discord_text.setFont(font);
+	discord_text.setString("request mods at:");
+	discord_text.setCharacterSize(16);
+	//discord_text.setStyle(sf::Text::Bold);
+	discord_text.setFillColor(sf::Color::White);
+	discord_text.setOrigin(discord_text.getGlobalBounds().width / 2, discord_text.getGlobalBounds().height / 2);
+	discord_text.setPosition(150, 320);
+
 	sf::Text credit_text;
 	credit_text.setFont(font);
 	credit_text.setString("<3 daltonyx");
@@ -888,6 +897,7 @@ int main()
 		bep_install.update(window, mainDisplay);
 		bep_uninstall.update(window, mainDisplay);
 		window.draw(bep_installed_text);
+		window.draw(discord_text);
 		//display the window
 		button1.update(window, mainDisplay);
 		button2.update(window, mainDisplay);

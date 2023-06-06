@@ -255,7 +255,6 @@ public:
 		return file.good();
 	}
 
-
 	bool is_bep_installed(string directory)
 	{
 		//if there is a folder named bepinex in the directory, return true.
@@ -375,6 +374,14 @@ public:
 		this->text.setPosition(this->position.x, this->position.y);
 	}
 };
+
+void Log(string message)
+{
+	cout << message + "::" << endl;
+	std::wstring wide_message(message.begin(), message.end());
+	LPCWSTR long_message = wide_message.c_str();
+	OutputDebugString(long_message);
+}
 
 bool is_bep_installed(string directory)
 {
@@ -550,6 +557,15 @@ void populate_sayings(vector<string>& sayings)
 	sayings.push_back("man, i really need some more sayings, don't i?.");
 }
 
+bool is_dll_installed(string dll, string directory)
+{
+	string path = directory + "/" + dll;
+	ifstream file(path);
+	//Log(to_string(file.good()));
+
+	return file.good();
+}
+
 #pragma endregion
 
 
@@ -656,12 +672,30 @@ int main()
 
 	sf::Text discord_text;
 	discord_text.setFont(font);
-	discord_text.setString("request mods at:");
+	discord_text.setString("request Unity mods at:");
 	discord_text.setCharacterSize(16);
 	//discord_text.setStyle(sf::Text::Bold);
 	discord_text.setFillColor(sf::Color::White);
 	discord_text.setOrigin(discord_text.getGlobalBounds().width / 2, discord_text.getGlobalBounds().height / 2);
 	discord_text.setPosition(150, 320);
+
+	sf::Text console_commands_text;
+	console_commands_text.setFont(font);
+	console_commands_text.setString("console commands installed!");
+	console_commands_text.setCharacterSize(16);
+	console_commands_text.setStyle(sf::Text::Bold);
+	console_commands_text.setFillColor(sf::Color::White);
+	console_commands_text.setOrigin(console_commands_text.getGlobalBounds().width / 2, console_commands_text.getGlobalBounds().height / 2);
+	console_commands_text.setPosition(1385, 705);
+
+	sf::Text unityexplorer_text;
+	unityexplorer_text.setFont(font);
+	unityexplorer_text.setString("unityexplorer installed!");
+	unityexplorer_text.setCharacterSize(16);
+	unityexplorer_text.setStyle(sf::Text::Bold);
+	unityexplorer_text.setFillColor(sf::Color::White);
+	unityexplorer_text.setOrigin(unityexplorer_text.getGlobalBounds().width / 2, unityexplorer_text.getGlobalBounds().height / 2);
+	unityexplorer_text.setPosition(1385, 645);
 
 	sf::Text credit_text;
 	credit_text.setFont(font);
@@ -706,11 +740,14 @@ int main()
 	Button button2 = Button("MUCK", sf::Vector2f(150, 570+40),1,6);
 	Button button3 = Button("HOLLOW KNIGHT", sf::Vector2f(150, 640+40),2,6);
 	Button button4 = Button("REGIONS OF RUIN", sf::Vector2f(150, 710+40),3,5);
+	Button unityexplorer_install = Button("UNITYEXPLORER", sf::Vector2f(1070,650),-4,6);
+	Button consolecommands_install = Button("CONSOLE COMMANDS", sf::Vector2f(1070, 710), -5, 6);
 
 	//make sure we're actually zero-ed out in state
 	mainDisplay.setName("havendock");
 	mainDisplay.bep_version = 6;
 	mainDisplay.texture.loadFromFile("resources/images/havendock.png");
+	mainDisplay.function_last_used = 0;
 
 #pragma endregion
 	while (running)
@@ -816,7 +853,7 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Green);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
 			else
 			{
@@ -824,8 +861,41 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Red);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
+			if (is_dll_installed("ConsoleCommands.dll", "C:/Program Files (x86)/Steam/steamapps/common/Havendock/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "D:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "E:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "F:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "G:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins"))
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Installed!");
+				console_commands_text.setFillColor(sf::Color::Green);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Not Installed");
+				console_commands_text.setFillColor(sf::Color::Red);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			if (is_dll_installed("UnityExplorer.BIE6.Mono.dll", "C:/Program Files (x86)/Steam/steamapps/common/Havendock/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "D:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "E:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "F:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "G:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins/sinai-dev-UnityExplorer"))
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Installed!");
+				unityexplorer_text.setFillColor(sf::Color::Green);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Not Installed");
+				unityexplorer_text.setFillColor(sf::Color::Red);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
+			}
+			break;
 		case(1):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Muck") ||
 				is_bep_installed("D:/SteamLibrary/steamapps/common/Muck") ||
@@ -837,7 +907,7 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Green);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
 			else
 			{
@@ -845,8 +915,9 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Red);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
+			break;
 		case(2):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight") ||
 				is_bep_installed("D:/SteamLibrary/steamapps/common/Hollow Knight") ||
@@ -858,7 +929,7 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Green);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
 			else
 			{
@@ -866,8 +937,9 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Red);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
+			break;
 		case(3):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin") ||
 				is_bep_installed("D:/SteamLibrary/steamapps/common/Regions of Ruin") ||
@@ -879,7 +951,7 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Green);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
 			else
 			{
@@ -887,9 +959,9 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Red);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				break;
+				
 			}
-		
+			break;
 
 		}
 		bep_install.draw(window);
@@ -898,11 +970,17 @@ int main()
 		bep_uninstall.update(window, mainDisplay);
 		window.draw(bep_installed_text);
 		window.draw(discord_text);
+		unityexplorer_install.draw(window);
+		consolecommands_install.draw(window);
+		window.draw(console_commands_text);
+		window.draw(unityexplorer_text);
 		//display the window
 		button1.update(window, mainDisplay);
 		button2.update(window, mainDisplay);
 		button3.update(window, mainDisplay);
 		discord.update(window, mainDisplay);
+		unityexplorer_install.update(window, mainDisplay);
+		consolecommands_install.update(window, mainDisplay);
 		mainDisplay.update("havendock");
 		button4.update(window, mainDisplay);
 		window.setFramerateLimit(60);

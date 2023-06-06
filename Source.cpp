@@ -275,6 +275,48 @@ public:
 				string command = "";
 				switch(function_number)
 				{
+					case(-3):
+						switch (mainDisplay.function_last_used)
+						{
+						case(0):
+							command = "python resources/scripts/bepinex_havendock_uninstall.py";
+							run_command(command);
+							break;
+						case(1):
+							command = "python resources/scripts/bepinex_muck_uninstall.py";
+							run_command(command);
+							break;
+						case(2):
+							command = "python resources/scripts/bepinex_hollowknight_uninstall.py";
+							run_command(command);
+							break;
+						case(3):
+							command = "python resources/scripts/bepinex_regionsofruin_uninstall.py";
+							run_command(command);
+							break;
+						}
+						break;
+					case(-2):
+						switch (mainDisplay.function_last_used)
+						{
+							case(0):
+								command = "python resources/scripts/bepinex_havendock.py";
+								run_command(command);
+								break;
+							case(1):
+								command = "python resources/scripts/bepinex_muck.py";
+								run_command(command);
+								break;
+							case(2):
+								command = "python resources/scripts/bepinex_hollowknight.py";
+								run_command(command);
+								break;
+							case(3):
+								command = "python resources/scripts/bepinex_regionsofruin.py";
+								run_command(command);
+								break;
+						}
+						break;
 					case(-1):
 						command = "start https://discord.gg/daMWV3TTea";
 						run_command(command);

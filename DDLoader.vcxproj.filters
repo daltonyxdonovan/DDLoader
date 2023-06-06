@@ -29,6 +29,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="build.sh" />
-    <None Include="bepinex_havendock.py" />
   </ItemGroup>
 </Project>

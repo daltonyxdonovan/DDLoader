@@ -26,6 +26,7 @@ float version = 3.0;
 bool windowheld = false;
 bool needs_update = false;
 
+
 class MainDisplay
 {
 private:
@@ -565,10 +566,6 @@ bool is_dll_installed(string dll, string directory)
 #pragma endregion
 
 
-
-
-
-
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(width, height), "DDLoader", sf::Style::None);
@@ -616,8 +613,7 @@ int main()
 	
 	MainDisplay mainDisplay = MainDisplay("DDLoader", 6, sf::Vector2f(950, 415), sf::Vector2f(1250, 720), texture);
 
-
-	//set up text
+	//set up text objects and shapes for titlebar/UI
 	sf::Text program_title;
 	program_title.setFont(font);
 	program_title.setString("DDLoader");
@@ -913,6 +909,40 @@ int main()
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
 				
 			}
+			//check for ConsoleCommands.dll
+			if (is_dll_installed("ConsoleCommands.dll", "C:/Program Files (x86)/Steam/steamapps/common/Muck/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "D:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "E:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "F:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "G:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins"))
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Installed!");
+				console_commands_text.setFillColor(sf::Color::Green);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Not Installed");
+				console_commands_text.setFillColor(sf::Color::Red);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			//check for UnityExplorer.BIE6.Mono.dll
+			if (is_dll_installed("UnityExplorer.BIE6.Mono.dll", "C:/Program Files (x86)/Steam/steamapps/common/Muck/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "D:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "E:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "F:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "G:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins/sinai-dev-UnityExplorer"))
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Installed!");
+				unityexplorer_text.setFillColor(sf::Color::Green);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Not Installed");
+				unityexplorer_text.setFillColor(sf::Color::Red);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
+			}
 			break;
 		case(2):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight") ||
@@ -935,6 +965,40 @@ int main()
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
 				
 			}
+			//check for ConsoleCommands.dll
+			if (is_dll_installed("ConsoleCommands.dll", "C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "D:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "E:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "F:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins") ||
+				is_dll_installed("ConsoleCommands.dll", "G:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins"))
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Installed!");
+				console_commands_text.setFillColor(sf::Color::Green);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Not Installed");
+				console_commands_text.setFillColor(sf::Color::Red);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			//check for UnityExplorer.BIE6.Mono.dll
+			if (is_dll_installed("UnityExplorer.BIE6.Mono.dll", "C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "D:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "E:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "F:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE6.Mono.dll", "G:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins/sinai-dev-UnityExplorer"))
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Installed!");
+				unityexplorer_text.setFillColor(sf::Color::Green);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Not Installed");
+				unityexplorer_text.setFillColor(sf::Color::Red);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
+			}
 			break;
 		case(3):
 			if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin") ||
@@ -947,7 +1011,6 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Green);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				
 			}
 			else
 			{
@@ -955,7 +1018,40 @@ int main()
 				bep_installed_text.setFillColor(sf::Color::Red);
 				bep_installed_text.setOrigin(bep_installed_text.getLocalBounds().width / 2, bep_installed_text.getLocalBounds().height / 2);
 				bep_installed_text.setPosition(mainDisplay.text_position.x, mainDisplay.text_position.y + 75);
-				
+			}
+			//check for RegionsOfRuin_ConsoleCommands.dll
+			if (is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "D:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "E:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "F:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins") ||
+				is_dll_installed("RegionsOfRuin_ConsoleCommands.dll", "G:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins"))
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Installed!");
+				console_commands_text.setFillColor(sf::Color::Green);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				console_commands_text.setString("CONSOLE COMMANDS Not Installed");
+				console_commands_text.setFillColor(sf::Color::Red);
+				console_commands_text.setOrigin(console_commands_text.getLocalBounds().width / 2, console_commands_text.getLocalBounds().height / 2);
+			}
+			//check for UnityExplorer.BIE5.Mono.dll
+			if (is_dll_installed("UnityExplorer.BIE5.Mono.dll", "C:/Program Files (x86)/Steam/steamapps/common/Regions of Ruin/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE5.Mono.dll", "D:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE5.Mono.dll", "E:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE5.Mono.dll", "F:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins/sinai-dev-UnityExplorer") ||
+				is_dll_installed("UnityExplorer.BIE5.Mono.dll", "G:/SteamLibrary/steamapps/common/Regions of Ruin/BepInEx/plugins/sinai-dev-UnityExplorer"))
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Installed!");
+				unityexplorer_text.setFillColor(sf::Color::Green);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
+			}
+			else
+			{
+				unityexplorer_text.setString("UNITYEXPLORER Not Installed");
+				unityexplorer_text.setFillColor(sf::Color::Red);
+				unityexplorer_text.setOrigin(unityexplorer_text.getLocalBounds().width / 2, unityexplorer_text.getLocalBounds().height / 2);
 			}
 			break;
 

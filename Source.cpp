@@ -945,11 +945,7 @@ int main()
 	sf::Font font;
 	font.loadFromFile("resources/RobotoMono-Light.ttf");
 	
-	//check for an update, and handle accordingly
-	if (check_for_update())
-	{
-		needs_update = true;
-	}
+	
 
 	//add images for logo
 	for (int i = 0; i < 90; i++)
@@ -1113,17 +1109,7 @@ int main()
 	sf::Texture discord_texture;
 	discord_texture.loadFromFile("resources/images/discord.png");
 
-	//convert changelog.txt to string
-	ifstream changelog_file;
-	changelog_file.open("changelog.txt");
-	string changelog_string;
-	string liner;
-	while (getline(changelog_file, liner))
-	{
-		changelog_string += liner;
-		changelog_string += "\n";
-	}
-	changelog_file.close();
+	
 
 	//create game buttons
 	vector<Button> buttons;

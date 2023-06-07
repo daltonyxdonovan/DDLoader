@@ -222,7 +222,7 @@ public:
 	}
 
 	Button(sf::Texture& image, sf::Vector2f position, int function_number, bool active = true) :
-		shape(sf::Vector2f(250, 50)),
+		shape(sf::Vector2f(image.getSize().x,image.getSize().y)),
 		font{},
 		text{ "",font,20 },
 		color{ 30, 30, 30, 255 },
@@ -231,7 +231,7 @@ public:
 		text_color{ 255, 255, 255, 255 },
 		position(position)
 	{
-		this->shape = sf::RectangleShape(sf::Vector2f(250, 50));
+		this->shape = sf::RectangleShape(sf::Vector2f(image.getSize().x, image.getSize().y));
 		this->buttonTexture = image;
 		this->shape.setTexture(&this->buttonTexture);
 		this->shape.setOrigin(this->shape.getSize().x / 2, this->shape.getSize().y / 2);
@@ -372,6 +372,31 @@ public:
 				string command = "";
 				switch (function_number)
 				{
+				case(-9):
+					command = "start https://github.com/sinai-dev/UnityExplorer/blob/master/README.md";
+					run_command(command);
+					break;
+				case(-8):
+					switch (mainDisplay.function_last_used)
+					{
+					case(0):
+						command = "start https://github.com/daltonyxdonovan/Havendock_ConsoleCommands/tree/master/README.md";
+						run_command(command);
+						break;
+					case(1):
+						command = "start https://github.com/daltonyxdonovan/Muck_ConsoleCommands/blob/master/README.md";
+						run_command(command);
+						break;
+					case(2):
+						command = "start https://github.com/daltonyxdonovan/HollowKnight_ConsoleCommands/blob/master/README.md";
+						run_command(command);
+						break;
+					case(3):
+						command = "start https://github.com/daltonyxdonovan/RegionsOfRuin_ConsoleCommands/blob/main/README.md";
+						run_command(command);
+						break;
+					}
+					break;
 				case(-7):
 					switch (mainDisplay.function_last_used)
 					{
@@ -386,7 +411,7 @@ public:
 					{
 					case(0):
 						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock"))
-							open_directory_in_explorer("C:\PROGRA~2\Steam\steamapps\common\Havendock\BepInEx\plugins");
+							open_directory_in_explorer("C:/PROGRA~2/Steam/steamapps/common/Havendock/BepInEx/plugins");
 						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Havendock"))
 							open_directory_in_explorer("D:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins");
 						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Havendock"))
@@ -397,7 +422,7 @@ public:
 							open_directory_in_explorer("G:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins");
 							
 						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock Demo"))
-							open_directory_in_explorer("C:\PROGRA~2/Steam/steamapps/common/Havendock Demo/BepInEx/plugins");
+							open_directory_in_explorer("C:/PROGRA~2/Steam/steamapps/common/Havendock Demo/BepInEx/plugins");
 						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Havendock Demo"))
 							open_directory_in_explorer("D:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins");
 						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Havendock Demo"))
@@ -409,7 +434,7 @@ public:
 						break;
 					case(1):
 						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Muck"))
-							open_directory_in_explorer("C:\PROGRA~2/Steam/steamapps/common/Muck/BepInEx/plugins");
+							open_directory_in_explorer("C:/PROGRA~2/Steam/steamapps/common/Muck/BepInEx/plugins");
 						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Muck"))
 							open_directory_in_explorer("D:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins");
 						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Muck"))
@@ -421,7 +446,7 @@ public:
 						break;
 					case(2):
 						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight"))
-							open_directory_in_explorer("C:\PROGRA~2/Steam/steamapps/common/Hollow Knight/BepInEx/plugins");
+							open_directory_in_explorer("C:/PROGRA~2/Steam/steamapps/common/Hollow Knight/BepInEx/plugins");
 						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Hollow Knight"))
 							open_directory_in_explorer("D:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins");
 						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Hollow Knight"))
@@ -912,7 +937,11 @@ int main()
 
 	vector<sf::Texture> credit_textures;
 	sf::Texture texture;
+	sf::Texture help_cc_texture;
+	sf::Texture help_ue_texture;
 	texture.loadFromFile("resources/images/hollowknight.png");
+	help_cc_texture.loadFromFile("resources/images/help.png");
+	help_ue_texture.loadFromFile("resources/images/help.png");
 	sf::Font font;
 	font.loadFromFile("resources/RobotoMono-Light.ttf");
 	
@@ -1036,17 +1065,17 @@ int main()
 
 	sf::Text instructions1;
 	instructions1.setFont(font);
-	instructions1.setCharacterSize(16);
+	instructions1.setCharacterSize(20);
 	instructions1.setStyle(sf::Text::Bold);
 	instructions1.setString("to install a mod not listed here:");
 	instructions1.setFillColor(sf::Color::White);
 	instructions1.setOrigin(instructions1.getGlobalBounds().width / 2, instructions1.getGlobalBounds().height / 2);
-	instructions1.setPosition(1225, 200);
+	instructions1.setPosition(1225, 190);
 
 	sf::Text instructions2;
 	instructions2.setFont(font);
 	instructions2.setCharacterSize(16);
-	instructions2.setStyle(sf::Text::Bold);
+	//instructions2.setStyle(sf::Text::Bold);
 	instructions2.setString("1) download mod zip from nexusMods");
 	instructions2.setFillColor(sf::Color::White);
 	instructions2.setOrigin(instructions2.getGlobalBounds().width / 2, instructions2.getGlobalBounds().height / 2);
@@ -1055,7 +1084,7 @@ int main()
 	sf::Text instructions3;
 	instructions3.setFont(font);
 	instructions3.setCharacterSize(16);
-	instructions3.setStyle(sf::Text::Bold);
+	//instructions3.setStyle(sf::Text::Bold);
 	instructions3.setString("2) copy .DLL from inside the zip you downloaded");
 	instructions3.setFillColor(sf::Color::White);
 	instructions3.setOrigin(instructions3.getGlobalBounds().width / 2, instructions3.getGlobalBounds().height / 2);
@@ -1064,7 +1093,7 @@ int main()
 	sf::Text instructions4;
 	instructions4.setFont(font);
 	instructions4.setCharacterSize(16);
-	instructions4.setStyle(sf::Text::Bold);
+	//instructions4.setStyle(sf::Text::Bold);
 	instructions4.setString("3) click \"MODS FOLDER\"");
 	instructions4.setFillColor(sf::Color::White);
 	instructions4.setOrigin(instructions4.getGlobalBounds().width / 2, instructions4.getGlobalBounds().height / 2);
@@ -1073,7 +1102,7 @@ int main()
 	sf::Text instructions5;
 	instructions5.setFont(font);
 	instructions5.setCharacterSize(16);
-	instructions5.setStyle(sf::Text::Bold);
+	//instructions5.setStyle(sf::Text::Bold);
 	instructions5.setString("4) paste the .DLL into the mods folder that opens!");
 	instructions5.setFillColor(sf::Color::White);
 	instructions5.setOrigin(instructions5.getGlobalBounds().width / 2, instructions5.getGlobalBounds().height / 2);
@@ -1109,6 +1138,8 @@ int main()
 	Button button4 = Button("REGIONS OF RUIN", sf::Vector2f(150, 710+40),3,5);
 	Button unityexplorer_install = Button("UNITYEXPLORER", sf::Vector2f(1070,650),-4,6);
 	Button consolecommands_install = Button("CONSOLE COMMANDS", sf::Vector2f(1070, 710), -5, 6);
+	Button help_cc = Button(help_cc_texture, sf::Vector2f(910,710), -8);
+	Button help_ue = Button(help_ue_texture, sf::Vector2f(910, 650), -9);
 
 	//make sure we're actually zero-ed out in state
 	mainDisplay.setName("havendock");
@@ -1460,6 +1491,8 @@ int main()
 		window.draw(instructions3);
 		window.draw(instructions4);
 		window.draw(instructions5);
+		help_cc.draw(window);
+		help_ue.draw(window);
 
 		//update the window
 		button1.update(window, mainDisplay);
@@ -1471,6 +1504,8 @@ int main()
 		consolecommands_install.update(window, mainDisplay);
 		mainDisplay.update("havendock");
 		mods_folder.update(window, mainDisplay);
+		help_cc.update(window, mainDisplay);
+		help_ue.update(window, mainDisplay);
 		//filepicker_install.update(window, mainDisplay);
 		window.setFramerateLimit(60);
 		window.display();

@@ -372,11 +372,11 @@ public:
 				string command = "";
 				switch (function_number)
 				{
-				case(-9):
+				case(-9): // open unity explorer github
 					command = "start https://github.com/sinai-dev/UnityExplorer/blob/master/README.md";
 					run_command(command);
 					break;
-				case(-8):
+				case(-8): //open console commands github
 					switch (mainDisplay.function_last_used)
 					{
 					case(0):
@@ -397,7 +397,7 @@ public:
 						break;
 					}
 					break;
-				case(-7):
+				case(-7): // broken rn
 					switch (mainDisplay.function_last_used)
 					{
 					case(3):
@@ -406,7 +406,7 @@ public:
 						break;
 					}
 					break;
-				case(-6):
+				case(-6): //opens mods folder for respective game
 					switch(mainDisplay.function_last_used)
 					{
 					case(0):
@@ -470,7 +470,7 @@ public:
 							open_directory_in_explorer("G:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins");
 						break;
 					}
-				case(-4):
+				case(-4): //installs Unityexplorer
 				{
 					switch (mainDisplay.function_last_used)
 					{
@@ -540,7 +540,7 @@ public:
 					}
 					break;
 				}
-				case(-5):
+				case(-5): //installs console commands
 					switch (mainDisplay.function_last_used)
 					{
 					case(0):
@@ -609,7 +609,7 @@ public:
 						break;
 					}
 					break;
-				case(-3):
+				case(-3): // uninstall bepinex
 					switch (mainDisplay.function_last_used)
 					{
 					case(0):
@@ -630,7 +630,7 @@ public:
 						break;
 					}
 					break;
-				case(-2):
+				case(-2): // install bepinex
 					switch (mainDisplay.function_last_used)
 					{
 						case(0):
@@ -651,29 +651,29 @@ public:
 							break;
 					}
 					break;
-				case(-1):
+				case(-1): // opens my discord page
 					command = "start https://discord.gg/daMWV3TTea";
 					run_command(command);
 					break;
-				case(0):
+				case(0): // switch mainDisplay to havendock
 					mainDisplay.setName("havendock");
 					mainDisplay.bep_version = 6;
 					mainDisplay.texture.loadFromFile("resources/images/havendock.png");
 					mainDisplay.function_last_used = 0;
 					break;
-				case(1):
+				case(1): //switch mainDisplay to muck
 					mainDisplay.setName("muck");
 					mainDisplay.bep_version = 6;
 					mainDisplay.texture.loadFromFile("resources/images/muck.png");
 					mainDisplay.function_last_used = 1;
 					break;
-				case(2):
+				case(2): //switch mainDisplay to hollow knight
 					mainDisplay.setName("hollow knight");
 					mainDisplay.bep_version = 6;
 					mainDisplay.texture.loadFromFile("resources/images/hollowknight.png");
 					mainDisplay.function_last_used = 2;
 					break;
-				case(3):
+				case(3): //switch mainDisplay to regions of ruin
 					mainDisplay.setName("regions of ruin");
 					mainDisplay.bep_version = 5;
 					mainDisplay.texture.loadFromFile("resources/images/regionsofruin.png");

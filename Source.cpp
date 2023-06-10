@@ -156,10 +156,12 @@ public:
 	int bep_version;
 	bool active;
 
-	Button(string text, sf::Vector2f position, int function_number, int bep_version, sf::Vector2f size, bool active = true) :
+
+
+	Button(string text, sf::Vector2f position, int function_number, int bep_version, sf::Vector2f size, int fontsize, bool active = true) :
 		shape(sf::Vector2f(250, 50)),
 		font{},
-		text{ text,font,20 },
+		text{ text,font,fontsize },
 		color{ 30, 30, 30, 255 },
 		hover_color{ 50, 50, 50, 255 },
 		click_color{ 60, 60, 60, 255 },
@@ -174,7 +176,7 @@ public:
 		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
 		this->text.setFont(font);
 		this->text.setString("no");
-		this->text.setCharacterSize(20);
+		this->text.setCharacterSize(fontsize);
 		this->text.setFillColor(sf::Color(255, 255, 255, 255));
 		this->text.setPosition(this->shape.getPosition().x - (this->text.getGlobalBounds().width / 2), this->shape.getPosition().y - (this->text.getGlobalBounds().height / 2));
 		this->color = sf::Color(30, 30, 30, 255);
@@ -253,6 +255,8 @@ public:
 		this->active = true;
 	}
 
+
+
 	void draw(sf::RenderWindow& window)
 	{
 		window.draw(this->shape);
@@ -274,7 +278,6 @@ public:
 		ShellExecute(NULL, L"open", wstr, NULL, NULL, SW_SHOWNORMAL);
 		delete[] wstr;
 	}
-
 
 	void run_command(string command)
 	{
@@ -355,7 +358,6 @@ public:
 			}
 		}
 	}
-
 
 	void update(sf::RenderWindow& window, MainDisplay& mainDisplay)
 	{
@@ -1114,8 +1116,8 @@ int main()
 	//create game buttons
 	vector<Button> buttons;
 	Button discord = Button(discord_texture, sf::Vector2f(150, 360), -1);
-	Button mods_folder = Button("MODS FOLDER", sf::Vector2f(1225, 130), -6, 6,sf::Vector2f(560,50));
-	Button filepicker_install = Button("CHOOSE A FILE TO INSTALL", sf::Vector2f(1225, 190), -7, 6, sf::Vector2f(560, 50));
+	Button mods_folder = Button("MODS FOLDER", sf::Vector2f(1225, 130), -6, 6,sf::Vector2f(560,50), 20);
+	Button filepicker_install = Button("CHOOSE A FILE TO INSTALL", sf::Vector2f(1225, 190), -7, 6, sf::Vector2f(560, 50), 20);
 	Button bep_install = Button("INSTALL", sf::Vector2f(580, 650), -2, 6);
 	Button bep_uninstall = Button("UNINSTALL", sf::Vector2f(580, 710), -3, 6);
 	Button button1 = Button("HAVENDOCK", sf::Vector2f(150, 500+40),0,6);
@@ -1126,6 +1128,8 @@ int main()
 	Button consolecommands_install = Button("CONSOLE COMMANDS", sf::Vector2f(1070, 710), -5, 6);
 	Button help_cc = Button(help_cc_texture, sf::Vector2f(910,710), -8);
 	Button help_ue = Button(help_ue_texture, sf::Vector2f(910, 650), -9);
+	Button windowflip_mods = Button("install panel", sf::Vector2f(1050, 75), -10, 6, sf::Vector2f(340,25), 10);
+	Button windowflip_manager = Button("mods panel", sf::Vector2f(1398, 75), -11, 6, sf::Vector2f(340, 25), 10);
 
 	//make sure we're actually zero-ed out in state
 	mainDisplay.setName("havendock");
@@ -1479,6 +1483,11 @@ int main()
 		window.draw(instructions5);
 		help_cc.draw(window);
 		help_ue.draw(window);
+		windowflip_manager.draw(window);
+		windowflip_manager.update(window, mainDisplay);
+
+		windowflip_mods.draw(window);
+		windowflip_mods.update(window, mainDisplay);
 
 		//update the window
 		button1.update(window, mainDisplay);

@@ -154,9 +154,6 @@
     <Image Include="Icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="build.sh" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="MainDisplay.h" />
   </ItemGroup>

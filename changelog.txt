@@ -1,6 +1,0 @@
-=====================CHANGELOG=====================
-
--added Dinkum script and Button
--fixed application icon not showing up
--that's literally it
-

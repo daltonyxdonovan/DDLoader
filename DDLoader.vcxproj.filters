@@ -31,9 +31,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="build.sh" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="MainDisplay.h">
       <Filter>Header Files</Filter>
     </ClInclude>

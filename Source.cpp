@@ -364,7 +364,7 @@ public:
 
 	//holy crap I will never use switch statements again i hate this mess
 	//used to think they were clean, but not only is this an unmanageable mess, i ALSO don't know what anything IS, because it's all numbers
-	void update(sf::RenderWindow& window, MainDisplay& mainDisplay, bool installer = true)
+	void update(sf::RenderWindow& window, MainDisplay& mainDisplay, bool installer)
 	{
 		sf::Vector2f mouse_pos = sf::Vector2f(sf::Mouse::getPosition(window));
 		//if mouse is over button
@@ -1136,8 +1136,6 @@ int main()
 	instructions5.setOrigin(instructions5.getGlobalBounds().width / 2, instructions5.getGlobalBounds().height / 2);
 	instructions5.setPosition(1225, 320);
 
-
-
 	sf::Texture discord_texture;
 	discord_texture.loadFromFile("resources/images/discord.png");
 
@@ -1508,11 +1506,11 @@ int main()
 			consolecommands_install.draw(window);
 
 
-			mods_folder.update(window, mainDisplay);
-			help_cc.update(window, mainDisplay);
-			help_ue.update(window, mainDisplay);
-			unityexplorer_install.update(window, mainDisplay);
-			consolecommands_install.update(window, mainDisplay);
+			mods_folder.update(window, mainDisplay, installer);
+			help_cc.update(window, mainDisplay, installer);
+			help_ue.update(window, mainDisplay, installer);
+			unityexplorer_install.update(window, mainDisplay, installer);
+			consolecommands_install.update(window, mainDisplay, installer);
 		}
 		else if (!installer);
 		{
@@ -1523,8 +1521,8 @@ int main()
 		//draw the window
 		bep_install.draw(window);
 		bep_uninstall.draw(window);
-		bep_install.update(window, mainDisplay);
-		bep_uninstall.update(window, mainDisplay);
+		bep_install.update(window, mainDisplay, installer);
+		bep_uninstall.update(window, mainDisplay, installer);
 		window.draw(bep_installed_text);
 		window.draw(discord_text);
 		window.draw(console_commands_text);
@@ -1535,11 +1533,11 @@ int main()
 		//update the window
 		windowflip_manager.update(window, mainDisplay, installer);
 		windowflip_mods.update(window, mainDisplay, installer);
-		button1.update(window, mainDisplay);
-		button2.update(window, mainDisplay);
-		button3.update(window, mainDisplay);
-		button4.update(window, mainDisplay);
-		discord.update(window, mainDisplay);
+		button1.update(window, mainDisplay, installer);
+		button2.update(window, mainDisplay, installer);
+		button3.update(window, mainDisplay, installer);
+		button4.update(window, mainDisplay, installer);
+		discord.update(window, mainDisplay, installer);
 		mainDisplay.update("havendock");
 
 		window.setFramerateLimit(60);

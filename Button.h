@@ -35,6 +35,7 @@ public:
 	int function_number;
 	int bep_version;
 	bool active;
+	int ticker;
 
 
 	//constructors
@@ -49,7 +50,7 @@ public:
 		text_color{ 255, 255, 255, 255 },
 		position(position)
 	{
-
+		this->ticker = 0;
 		this->shape = sf::RectangleShape(size);
 		this->shape.setFillColor(sf::Color(10, 10, 10, 255));
 		this->shape.setOrigin(this->shape.getSize().x / 2, this->shape.getSize().y / 2);
@@ -82,7 +83,7 @@ public:
 		text_color{ 255, 255, 255, 255 },
 		position(position)
 	{
-
+		this->ticker = 0;
 		this->shape = sf::RectangleShape(sf::Vector2f(250, 50));
 		this->shape.setFillColor(sf::Color(10, 10, 10, 255));
 		this->shape.setOrigin(this->shape.getSize().x / 2, this->shape.getSize().y / 2);
@@ -114,6 +115,7 @@ public:
 		text_color{ 255, 255, 255, 255 },
 		position(position)
 	{
+		this->ticker = 0;
 		this->shape = sf::RectangleShape(sf::Vector2f(image.getSize().x, image.getSize().y));
 		this->buttonTexture = image;
 		this->shape.setTexture(&this->buttonTexture);
@@ -254,25 +256,30 @@ public:
 			//if mouse is clicked
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
+
 				this->shape.setFillColor(this->click_color);
 				string command = "";
 				switch (function_number)
 				{
 				case(-11): //set to modscanner mode
-				{
-					installer = false;
-				}
+					{
+						installer = false;
+						Log("set to modscanner mode");
+					}
+					break;
 				case(-10): //set to installer mode
-				{
-					installer = true;
-				}
-				break;
+					{
+					
+						installer = true;
+						Log("set to installer mode");
+					}
+					break;
 				case(-9): // open unity explorer github
-				{
-					command = "start https://github.com/sinai-dev/UnityExplorer/blob/master/README.md";
-					run_command(command);
-				}
-				break;
+					{
+						command = "start https://github.com/sinai-dev/UnityExplorer/blob/master/README.md";
+						run_command(command);
+					}
+					break;
 				case(-8): //open console commands github
 					switch (mainDisplay.function_last_used)
 					{

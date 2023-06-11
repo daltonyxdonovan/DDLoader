@@ -561,7 +561,7 @@ int main()
 		button4.draw(window);
 		discord.draw(window);
 
-		//switch for what to display
+		//switch for what text to display
 		switch (mainDisplay.function_last_used)
 		{
 		case(0):
@@ -800,6 +800,8 @@ int main()
 			help_ue.draw(window);
 			unityexplorer_install.draw(window);
 			consolecommands_install.draw(window);
+			window.draw(console_commands_text);
+			window.draw(unityexplorer_text);
 
 
 			mods_folder.update(window, mainDisplay, installer);
@@ -821,8 +823,7 @@ int main()
 		bep_uninstall.update(window, mainDisplay, installer);
 		window.draw(bep_installed_text);
 		window.draw(discord_text);
-		window.draw(console_commands_text);
-		window.draw(unityexplorer_text);
+		
 		windowflip_manager.draw(window);
 		windowflip_mods.draw(window);
 

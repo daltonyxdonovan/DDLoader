@@ -463,8 +463,8 @@ int main()
 	Button consolecommands_install = Button("CONSOLE COMMANDS", sf::Vector2f(1070, 710), -5, 6);
 	Button help_cc = Button(help_cc_texture, sf::Vector2f(910,710), -8);
 	Button help_ue = Button(help_ue_texture, sf::Vector2f(910, 650), -9);
-	Button windowflip_mods = Button("install panel", sf::Vector2f(1050, 80), -10, 6, sf::Vector2f(340,35), 10);
-	Button windowflip_manager = Button("mods panel", sf::Vector2f(1398, 80), -11, 6, sf::Vector2f(340, 35), 10);
+	Button windowflip_mods = Button("install panel", sf::Vector2f(1050, 80), -10, 6, sf::Vector2f(340,35), 16);
+	Button windowflip_manager = Button("mods panel", sf::Vector2f(1398, 80), -11, 6, sf::Vector2f(340, 35), 16);
 
 	Filescanner filescanner = Filescanner();
 

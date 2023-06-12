@@ -1,6 +1,6 @@
 # My Project
 
-![Header Image](https://ibb.co/bbd1qMH)
+https://i.ibb.co/jJ4hBPV/image.png
 
 ## Introduction
 

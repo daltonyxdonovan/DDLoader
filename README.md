@@ -1,6 +1,3 @@
-# My Project
-
-https://i.ibb.co/jJ4hBPV/image.png
 
 ## Introduction
 

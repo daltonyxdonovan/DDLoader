@@ -151,11 +151,18 @@
   <ItemGroup>
     <Image Include="Icon.ico" />
     <Image Include="Icon.png" />
+    <Image Include="icon1.ico" />
+    <Image Include="resources\Icon.ico" />
+    <Image Include="resources\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
     <ClInclude Include="Filescanner.h" />
     <ClInclude Include="MainDisplay.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DDLoader.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

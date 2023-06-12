@@ -26,6 +26,15 @@
     <Image Include="Icon.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\Icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\Icon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainDisplay.h">
@@ -37,5 +46,13 @@
     <ClInclude Include="Filescanner.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="DDLoader.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

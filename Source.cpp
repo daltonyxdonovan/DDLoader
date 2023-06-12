@@ -263,8 +263,7 @@ int main()
 	sf::Event event;
 	srand(time(NULL));
 	sf::Image icon;
-	HDROP hDrop;
-	if (!icon.loadFromFile("resources/Icon.png"));
+	if (!icon.loadFromFile("resources/Icon.png"))
 	{
 		//std::cout << "icon not found" << endl;
 	}

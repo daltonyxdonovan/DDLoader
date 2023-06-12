@@ -105,7 +105,7 @@ public:
 		this->active = true;
 	}
 
-	Button(sf::Texture& image, sf::Vector2f position, int function_number, bool active = true) :
+	Button(sf::Texture& image, sf::Vector2f position, int function_number, bool active = false) :
 		shape(sf::Vector2f(image.getSize().x, image.getSize().y)),
 		font{},
 		text{ "",font,20 },
@@ -137,13 +137,53 @@ public:
 		this->bep_version = bep_version;
 		this->active = true;
 	}
+	
+	//default constructor
+	Button():
+		shape(sf::Vector2f(40,40)),
+		font{},
+		text{ "",font,20 },
+		color{ 30, 30, 30, 255 },
+		hover_color{ 50, 50, 50, 255 },
+		click_color{ 60, 60, 60, 255 },
+		text_color{ 255, 255, 255, 255 },
+		position(position),
+		active(false)
+	{
+		this->active = false;
+		this->ticker = 0;
+		this->shape = sf::RectangleShape(sf::Vector2f(250, 50));
+		this->shape.setFillColor(sf::Color(10, 10, 10, 255));
+		this->shape.setOrigin(this->shape.getSize().x / 2, this->shape.getSize().y / 2);
+		this->shape.setPosition(sf::Vector2f(0.f, 0.f));
+		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
+		this->text.setFont(font);
+		this->text.setString("");
+		this->text.setCharacterSize(20);
+		this->text.setFillColor(sf::Color(255, 255, 255, 255));
+		this->text.setPosition(this->shape.getPosition().x - (this->text.getGlobalBounds().width / 2), this->shape.getPosition().y - (this->text.getGlobalBounds().height / 2));
+		this->color = sf::Color(30, 30, 30, 255);
+		this->hover_color = sf::Color(50, 50, 50, 255);
+		this->click_color = sf::Color(60, 60, 60, 255);
+		this->text_color = sf::Color(255, 255, 255, 255);
+		this->position = sf::Vector2f(0.f, 0.f);
+		this->DISPLAY_NAME = "no";
+		this->function_number = -12;
+		this->bep_version = 6;
 
+	}
 
+	void setPosition(sf::Vector2f position)
+	{
+		this->position = position;
+	}
+	
 	//methods
 	void draw(sf::RenderWindow& window)
 	{
 		window.draw(this->shape);
-		window.draw(this->text);
+		if (this->active != false && text.getString() != "" && text.getString() != "no")
+			window.draw(this->text);
 	}
 
 	void Log(string message)

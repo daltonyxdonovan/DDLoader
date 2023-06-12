@@ -789,7 +789,6 @@ int main()
 		
 		if (installer)
 		{
-			//Log("we are in installer mode 000000000")
 			//if in installer mode
 			window.draw(instructions1);
 			window.draw(instructions2);
@@ -804,7 +803,6 @@ int main()
 			window.draw(console_commands_text);
 			window.draw(unityexplorer_text);
 
-
 			mods_folder.update(window, mainDisplay, installer);
 			help_cc.update(window, mainDisplay, installer);
 			help_ue.update(window, mainDisplay, installer);
@@ -815,30 +813,27 @@ int main()
 		{
 			//if in mod filescanner mode
 			
-			//Log("we are in scanner mode/////////")
 		}
 
 		//draw the window
 		bep_install.draw(window);
 		bep_uninstall.draw(window);
-		bep_install.update(window, mainDisplay, installer);
-		bep_uninstall.update(window, mainDisplay, installer);
 		window.draw(bep_installed_text);
 		window.draw(discord_text);
-		
 		windowflip_manager.draw(window);
 		windowflip_mods.draw(window);
 
 		//update the window
 		windowflip_manager.update(window, mainDisplay, installer);
 		windowflip_mods.update(window, mainDisplay, installer);
+		bep_install.update(window, mainDisplay, installer);
+		bep_uninstall.update(window, mainDisplay, installer);
 		button1.update(window, mainDisplay, installer);
 		button2.update(window, mainDisplay, installer);
 		button3.update(window, mainDisplay, installer);
 		button4.update(window, mainDisplay, installer);
 		discord.update(window, mainDisplay, installer);
 		mainDisplay.update("havendock");
-		Log(to_string(installer));
 		window.setFramerateLimit(60);
 		window.display();
 

@@ -236,6 +236,38 @@ void populate_sayings(vector<string>& sayings)
 	sayings.push_back("feel free to request unity games to mod on discord!");
 	sayings.push_back("programmer socks? check");
 	sayings.push_back("feel free to request mods for unity games on discord!");
+	sayings.push_back("UnityExplorer is really good for modding unity games!");
+	sayings.push_back("Now with file management!");
+	sayings.push_back("spinny head machine go brrrrrr");
+	sayings.push_back("domo origato");
+	sayings.push_back("what even is curds and whey");
+	sayings.push_back("16 // 16 // 16 // 16 // 16 // 16");
+	sayings.push_back("oops! all console commands!");
+	sayings.push_back("vscode is pretty good");
+	sayings.push_back("made entirely on windows!");
+	sayings.push_back("DNSpy and ILSpy are really powerful tools!");
+	sayings.push_back("now with 100% more sayings!");
+	sayings.push_back("ramen ramen ramen");
+	sayings.push_back("my dang batteries are always dead");
+	sayings.push_back("this is just an echo chamber tbh");
+	sayings.push_back("she goes to another school");
+	sayings.push_back("sayings.push_back(message) lol");
+	sayings.push_back("the ink spots are a really soothing band");
+	sayings.push_back("GODSPEED, SPIDERMAN");
+	sayings.push_back("samus mains ftw");
+	sayings.push_back("rip @ the leaderboard");
+	sayings.push_back("they called him the drift king in college");
+	sayings.push_back("she blinded me, with science!");
+	sayings.push_back("i'm not a real doctor, but i am a real worm");
+	sayings.push_back("why can't it be plum fields forever?");
+	sayings.push_back("i'd rather have a bottle in front of me than a frontal lobotomy");
+	sayings.push_back("report bugs in the discord with /bug or !bug, it's appreciated!");
+	sayings.push_back("avid achievement unlocker");
+	sayings.push_back("63 achievements, 0.0hrs playtime :^)");
+	sayings.push_back("i really dig this font");
+	sayings.push_back("*angry skyscraper noises*");
+
+
 
 }
 
@@ -296,6 +328,14 @@ int main()
 	//create vector of sayings for titlebar
 	vector<string> sayings;
 	populate_sayings(sayings);
+	for (int i = 0; i < sayings.size(); i++)
+	{
+		swap_vector_indexes((rand() % sayings.size()), (rand() % sayings.size()), sayings);
+	}
+	for (int i = 0; i < sayings.size(); i++)
+	{
+		swap_vector_indexes((rand() % sayings.size()), (rand() % sayings.size()), sayings);
+	}
 	for (int i = 0; i < sayings.size(); i++)
 	{
 		swap_vector_indexes((rand() % sayings.size()), (rand() % sayings.size()), sayings);

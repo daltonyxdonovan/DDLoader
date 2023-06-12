@@ -1,6 +1,6 @@
 ![header](https://github.com/daltonyxdonovan/DDLoader/assets/90434265/a3460e0c-752e-4a47-b5c2-6c31198472d9)
 
-## Introduction
+## DDLoader Mod Manager (for Muck, Hollow Knight, Havendock, and Regions of Ruin!)
 
 This is a project I've spent admittedly way too much time on for what it is, but it's been very useful for developing mods so far.
 It's a tool that allows you to delete, enable or disable mods from the game's mod folder without having to manually move them around,

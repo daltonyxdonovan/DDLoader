@@ -8,8 +8,6 @@ and it has the added benefit of having quick access to the game's mod folder, as
 Installs bepinex in the blink of an eye, allowing for quick removal in the case of borking something, or quick installation for those who
 aren't as comfortable moving files around themselves!
 
-![file explorer](https://github.com/daltonyxdonovan/DDLoader/assets/90434265/8dd0ebf3-6e37-4f92-ba1b-ac956b578c6c)
-
 
 ## Features
 
@@ -26,6 +24,9 @@ aren't as comfortable moving files around themselves!
 *One-press BepInEx removal!
 
 *On the fly directory scanning/refresh! (goodbye, refresh button I can never find!)
+
+
+![file explorer](https://github.com/daltonyxdonovan/DDLoader/assets/90434265/8dd0ebf3-6e37-4f92-ba1b-ac956b578c6c)
 
 ## Installation
 

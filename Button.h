@@ -247,6 +247,14 @@ public:
 	//used to think they were clean, but not only is this an unmanageable mess, i ALSO don't know what anything IS, because it's all numbers
 	void update(sf::RenderWindow& window, MainDisplay& mainDisplay, bool installer)
 	{
+		if (ticker > 0)
+		{
+			ticker--;
+		}
+		if (ticker < 0)
+		{
+			ticker = 0;
+		}
 		sf::Vector2f mouse_pos = sf::Vector2f(sf::Mouse::getPosition(window));
 		//if mouse is over button
 		if (mouse_pos.x > this->shape.getPosition().x - (this->shape.getSize().x / 2) && mouse_pos.x < this->shape.getPosition().x + (this->shape.getSize().x / 2) && mouse_pos.y > this->shape.getPosition().y - (this->shape.getSize().y / 2) && mouse_pos.y < this->shape.getPosition().y + (this->shape.getSize().y / 2))
@@ -256,15 +264,22 @@ public:
 			//if mouse is clicked
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 			{
-
+				if (ticker != 0)
+				{
+					return;
+				}
+				ticker = 20;
 				this->shape.setFillColor(this->click_color);
 				string command = "";
 				switch (function_number)
 				{
+					
 				case(-11): //set to modscanner mode
 					{
 						installer = false;
 						Log("set to modscanner mode");
+						Log("installer = " + to_string(installer));
+						break;
 					}
 					break;
 				case(-10): //set to installer mode
@@ -272,6 +287,7 @@ public:
 					
 						installer = true;
 						Log("set to installer mode");
+						Log("installer = " + to_string(installer));
 					}
 					break;
 				case(-9): // open unity explorer github
@@ -600,7 +616,8 @@ public:
 				default:
 					mainDisplay.setName("error");
 					mainDisplay.bep_version = 6;
-				}
+				
+}
 
 			}
 		}

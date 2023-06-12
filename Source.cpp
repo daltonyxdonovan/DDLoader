@@ -813,6 +813,7 @@ int main()
 		else if (!installer);
 		{
 			//if in mod filescanner mode
+			Log("Mod Filescanner Mode ACTIVE WOOOOOOOO");
 
 		}
 

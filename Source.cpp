@@ -817,7 +817,7 @@ int main()
 		{
 			//if in mod filescanner mode
 			filescanner.draw(window);
-			filescanner.update();
+			filescanner.update(window);
 		}
 
 		//draw the window

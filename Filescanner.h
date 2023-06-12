@@ -35,12 +35,14 @@ public:
 	//reference to the actual mod file
 	//this is used to check if the mod is disabled or not
 	string mod_file_full_address;
+	int ticker;
 
 	Mod(string name, sf::Font& font,string address):
 		shape(sf::Vector2f(665, 50)),
 		text(name, font, 16)
 
 	{
+		this->ticker = 0;
 		this->mod_file_full_address = address;
 		this->name = name;
 		this->shape.setSize(sf::Vector2f(665, 50));
@@ -113,52 +115,83 @@ public:
 	{
 		window.draw(shape);
 		window.draw(text);
-		//update();
+		if (is_disabled(name))
+		{
+			enabled = false;
+			this->sprite.setTexture(texture_no);
+		}
+		else
+		{
+			enabled = true;
+			this->sprite.setTexture(texture_yes);
+		}
 		window.draw(sprite);
 	}
 
-	void update()
+	void update(sf::RenderWindow& window, bool& refresh, bool& allow_clicks, int& allow_clicks_ticker)
 	{
+		if (ticker > 0)
+		{
+			ticker--;
+			//Log(to_string(ticker) + " \\");
+		}
+			
+		if (ticker < 0)
+			ticker = 0;
 		this->text.setString(name);
 		this->sprite.setPosition(sf::Vector2f(position.x + 305, position.y));
 		//check if mod is enabled or disabled.
 		if (is_disabled(name))
 		{
 			enabled = false;
+			this->sprite.setTexture(texture_no);
 		}
 		else
 		{
 			enabled = true;
+			this->sprite.setTexture(texture_yes);
 		}
+
+		
+
+		if (ticker > 0)
+			return;
 
 		//if sprite is clicked, toggle enabled.
 		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 		{
-			if (sprite.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition().x, sf::Mouse::getPosition().y)))
+			
+			//Log(to_string(ticker));
+			if (sprite.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y)))
 			{
+				if (!allow_clicks)
+					return;
+
+				ticker = 120;
+				allow_clicks = false;
+				allow_clicks_ticker = 30;
+				
 				if (enabled)
 				{
 					enabled = false;
-					Log("Disabling mod: " + this->mod_file_full_address);
+					//Log("Disabling mod: " + this->mod_file_full_address);
 					disable(this->mod_file_full_address);
+					this->sprite.setTexture(texture_no);
+					Log("this has now been disabled.             ");
 				}
 				else
 				{
 					enabled = true;
-					Log("Enabling mod: " + this->mod_file_full_address);
+					//Log("Enabling mod: " + this->mod_file_full_address);
 					enable(this->mod_file_full_address);
+					this->sprite.setTexture(texture_yes);
+					Log("this has now been enabled.             ");
 				}
+				refresh = true;
 			}
 		}
 
-		if (enabled)
-		{
-			this->sprite.setTexture(texture_yes);
-		}
-		else
-		{
-			this->sprite.setTexture(texture_no);
-		}
+		
 
 	}
 
@@ -183,9 +216,14 @@ public:
 	bool running;
 	sf::RectangleShape border;
 	vector<Mod> mods{};
+	bool allow_clicks;
+	int allow_clicks_ticker;
+	sf::Texture yes_texture;
+	sf::Texture no_texture;
 
 	Filescanner(sf::Font& font)
 	{
+		this->allow_clicks_ticker = 0;
 		this->remembered_mods = 0;
 		this->font = font;
 		this->path = "C:/Program Files (x86)/Steam/steamapps/common/Havendock";
@@ -204,8 +242,9 @@ public:
 		this->border.setOrigin(size.x / 2, size.y / 2);
 		this->border.setPosition(position);
 		this->mods = vector<Mod>{};
-
-
+		this->allow_clicks = true;
+		this->yes_texture.loadFromFile("resources/images/yes.png");
+		this->no_texture.loadFromFile("resources/images/no.png");
 
 	};
 
@@ -280,6 +319,8 @@ public:
 		{
 			//count how many files there are in path + /BepInEx/plugins
 			//then set amount_of_mods to that number.
+			this->yes_texture.loadFromFile("resources/images/yes.png");
+			this->no_texture.loadFromFile("resources/images/no.png");
 			mods.clear();
 			if (filepath_needed == 0)
 			{
@@ -360,6 +401,9 @@ public:
 				mods[i].position = sf::Vector2f(position.x, (position.y-295) + (i * 60) + scroll_y);
 				mods[i].shape.setPosition(mods[i].position);
 				mods[i].text.setPosition(sf::Vector2f(mods[i].position.x - 310, mods[i].position.y));
+				mods[i].sprite.setPosition(sf::Vector2f(mods[i].position.x + 305, mods[i].position.y));
+				mods[i].texture_yes = yes_texture;
+				mods[i].texture_no = no_texture;
 			}
 
 			// vvv this is a way for me to save on cpu, but really it's negligible rn
@@ -444,11 +488,18 @@ public:
 		}
 	}
 
-	void update()
+	void update(sf::RenderWindow& window)
 	{
+		if (!allow_clicks)
+			allow_clicks_ticker--;
+		if (allow_clicks_ticker <= 0)
+		{
+			allow_clicks = true;
+			allow_clicks_ticker = 60;
+		}
 		for (int i = 0; i < mods.size(); i++)
 		{
-			mods[i].update();
+			mods[i].update(window, this->refresh, this->allow_clicks, this->allow_clicks_ticker);
 		}
 	}
 

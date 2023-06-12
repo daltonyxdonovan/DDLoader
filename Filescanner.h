@@ -64,7 +64,7 @@ public:
 	bool refresh;
 
 	sf::RectangleShape border;
-	vector<>
+	vector<Mod> mods;
 
 	Filescanner()
 	{

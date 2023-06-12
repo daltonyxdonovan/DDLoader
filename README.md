@@ -36,7 +36,9 @@ Just unzip DDLoader.zip to wherever you feel like keeping it, and run DDLoader.e
 
 
 NOTE+: resources has to be in the same folder as DDLoader.exe at all times!
+
 NOTE++:Havendock and Havendock Demo will collide, get rid of Havendock Demo if you want to use the Havendock section. You bought the game already anyways!
+
 NOTE+++:Muck uses Bep6 here, most mods use Bep5. If you want to use Bep5 mods, you'll have to install Bep5 yourself. I'll add a button for it later, but I'm not too concerned about it right now.
 
 

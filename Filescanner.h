@@ -20,6 +20,7 @@ using namespace std;
 
 class Mod
 {
+public:
 	string name;
 	bool enabled;
 	sf::RectangleShape shape;
@@ -28,11 +29,11 @@ class Mod
 	sf::Vector2f position;
 	int y_offset;
 
-	Mod()
+	Mod(string name)
 	{
-		this->name = "mod";
+		this->name = name;
 		this->enabled = false;
-		this->shape.setSize(sf::Vector2f(600, 50));
+		this->shape.setSize(sf::Vector2f(665, 50));
 		this->shape.setFillColor(sf::Color(40, 40, 40, 255));
 		this->shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 		this->shape.setPosition(position);
@@ -44,6 +45,13 @@ class Mod
 		this->text.setFillColor(sf::Color(255, 255, 255, 255));
 		this->text.setPosition(sf::Vector2f(position.x - text.getGlobalBounds().width / 2, position.y));
 		this->y_offset = 0;
+		
+	}
+
+	void update()
+	{
+		this->text.setString(name);
+
 	}
 
 };
@@ -64,7 +72,7 @@ public:
 	bool refresh;
 
 	sf::RectangleShape border;
-	vector<Mod> mods;
+	vector<Mod> mods{};
 
 	Filescanner()
 	{
@@ -85,7 +93,7 @@ public:
 		this->border.setFillColor(sf::Color(20, 20, 20, 255));
 		this->border.setOrigin(size.x / 2, size.y / 2);
 		this->border.setPosition(position);
-
+		this->mods = vector<Mod>{};
 
 
 
@@ -129,12 +137,14 @@ public:
 		{
 			//count how many files there are in path + /BepInEx/plugins
 			//then set amount_of_mods to that number.
-
+			mods.clear();
 			if (filepath_needed == 0)
 			{
 				for (const auto& entry : filesystem::directory_iterator(path + "/BepInEx/plugins"))
 				{
 					amount_of_mods++;
+					//add a mod to the vector.
+					mods.push_back(Mod(entry.path().filename().string()));
 				}
 			}
 			if (filepath_needed == 1)
@@ -142,6 +152,8 @@ public:
 				for (const auto& entry : filesystem::directory_iterator(path2 + "/BepInEx/plugins"))
 				{
 					amount_of_mods++;
+					//add a mod to the vector.
+					mods.push_back(Mod(entry.path().filename().string()));
 				}
 			}
 			if (filepath_needed == 2)
@@ -149,6 +161,8 @@ public:
 				for (const auto& entry : filesystem::directory_iterator(path3 + "/BepInEx/plugins"))
 				{
 					amount_of_mods++;
+					//add a mod to the vector.
+					mods.push_back(Mod(entry.path().filename().string()));
 				}
 			}
 			if (filepath_needed == 3)
@@ -156,6 +170,8 @@ public:
 				for (const auto& entry : filesystem::directory_iterator(path4 + "/BepInEx/plugins"))
 				{
 					amount_of_mods++;
+					//add a mod to the vector.
+					mods.push_back(Mod(entry.path().filename().string()));
 				}
 			}
 			if (filepath_needed == 4)
@@ -163,20 +179,37 @@ public:
 				for (const auto& entry : filesystem::directory_iterator(path5 + "/BepInEx/plugins"))
 				{
 					amount_of_mods++;
+					//add a mod to the vector.
+					mods.push_back(Mod(entry.path().filename().string()));
 				}
 			}
 
-			for (int i = 0; i < amount_of_mods; i++)
+			for (int i = 0; i < mods.size(); i++)
 			{
-				//draw a rectangle for each mod, and place them starting top to bottom.
-
+				////draw a rectangle for each mod, and place them starting top to bottom.
+				mods[i].position = sf::Vector2f(position.x, (position.y-295) + (i * 60) + scroll_y);
+				mods[i].shape.setPosition(mods[i].position);
+				mods[i].text.setPosition(sf::Vector2f(mods[i].position.x - mods[i].text.getGlobalBounds().width / 2, mods[i].position.y));
+				
 			}
+			//refresh = false;
+		}
+
+		for (int i = 0; i < mods.size(); i++)
+		{
+			
+			window.draw(mods[i].shape);
+			window.draw(mods[i].text);
+
 		}
 	}
 
 	void update()
 	{
-
+		for (int i = 0; i < mods.size(); i++)
+		{
+			mods[i].update();
+		}
 	}
 
 };

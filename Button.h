@@ -245,7 +245,7 @@ public:
 
 	//holy crap I will never use switch statements again i hate this mess
 	//used to think they were clean, but not only is this an unmanageable mess, i ALSO don't know what anything IS, because it's all numbers
-	void update(sf::RenderWindow& window, MainDisplay& mainDisplay, bool installer)
+	void update(sf::RenderWindow& window, MainDisplay& mainDisplay,bool& installer)
 	{
 		if (ticker > 0)
 		{
@@ -272,22 +272,18 @@ public:
 				this->shape.setFillColor(this->click_color);
 				string command = "";
 				switch (function_number)
-				{
+				{	///////////////////////////////////////////////////////////////////////////////////////////////////
+					//				 the general idea here is that <0 is a function and >=0 is a game page
+					///////////////////////////////////////////////////////////////////////////////////////////////////
 					
 				case(-11): //set to modscanner mode
 					{
 						installer = false;
-						Log("set to modscanner mode");
-						Log("installer = " + to_string(installer));
-						break;
 					}
 					break;
 				case(-10): //set to installer mode
 					{
-					
 						installer = true;
-						Log("set to installer mode");
-						Log("installer = " + to_string(installer));
 					}
 					break;
 				case(-9): // open unity explorer github

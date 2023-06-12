@@ -34,7 +34,7 @@ int header_anim_ticker = 0;
 float version = 3.0;
 bool windowheld = false;
 bool needs_update = false;
-bool installer = true;
+bool installer{ true };
 
 
 #pragma region METHODS
@@ -789,6 +789,7 @@ int main()
 		
 		if (installer)
 		{
+			//Log("we are in installer mode 000000000")
 			//if in installer mode
 			window.draw(instructions1);
 			window.draw(instructions2);
@@ -814,7 +815,7 @@ int main()
 		{
 			//if in mod filescanner mode
 			
-
+			//Log("we are in scanner mode/////////")
 		}
 
 		//draw the window
@@ -837,7 +838,7 @@ int main()
 		button4.update(window, mainDisplay, installer);
 		discord.update(window, mainDisplay, installer);
 		mainDisplay.update("havendock");
-
+		Log(to_string(installer));
 		window.setFramerateLimit(60);
 		window.display();
 

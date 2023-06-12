@@ -242,7 +242,6 @@ public:
 		
 	}
 
-	
 	bool is_bep_installed(string directory)
 	{
 		//if there is a folder named bepinex in the directory, return true.
@@ -355,8 +354,6 @@ public:
 				}
 			}
 
-			
-
 			for (int i = 0; i < mods.size(); i++)
 			{
 				////draw a rectangle for each mod, and place them starting top to bottom.
@@ -374,7 +371,6 @@ public:
 		if (!running)
 		{	//sets inital amount of mods
 			running = true;
-			
 		}
 		else
 		{	//counts mods without pushing to vector. shoulda just made a method but eh
@@ -438,16 +434,13 @@ public:
 			if (this->remembered_mods != amount_of_mods)
 			{
 				refresh = true;
-				
 			}
 		}
 
 
 		for (int i = 0; i < mods.size(); i++)
 		{
-			
 			mods[i].draw(window);
-
 		}
 	}
 

@@ -279,6 +279,7 @@ public:
 				case(-11): //set to modscanner mode
 					{
 						installer = false;
+						
 					}
 					break;
 				case(-10): //set to installer mode
@@ -387,76 +388,76 @@ public:
 						break;
 					}
 				case(-4): //installs Unityexplorer
-				{
-					switch (mainDisplay.function_last_used)
 					{
-					case(0):
-						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip -C Havendock";
-						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Havendock"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
-						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Havendock"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
-						if (is_bep_installed("F:/SteamLibrary/steamapps/common/Havendock"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
-						if (is_bep_installed("G:/SteamLibrary/steamapps/common/Havendock"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
+						switch (mainDisplay.function_last_used)
+						{
+						case(0):
+							if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip -C Havendock";
+							if (is_bep_installed("D:/SteamLibrary/steamapps/common/Havendock"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
+							if (is_bep_installed("E:/SteamLibrary/steamapps/common/Havendock"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
+							if (is_bep_installed("F:/SteamLibrary/steamapps/common/Havendock"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
+							if (is_bep_installed("G:/SteamLibrary/steamapps/common/Havendock"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Havendock/BepInEx/plugins";
 
-						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock Demo"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip -C HavendockD";
-						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Havendock Demo"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
-						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Havendock Demo"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
-						if (is_bep_installed("F:/SteamLibrary/steamapps/common/Havendock Demo"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
-						if (is_bep_installed("G:/SteamLibrary/steamapps/common/Havendock Demo"))
-							command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
-						run_command(command);
-						break;
-					case(1):
-						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Muck"))
-							command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip -C Muck";
-						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Muck"))
-							command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
-						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Muck"))
-							command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
-						if (is_bep_installed("F:/SteamLibrary/steamapps/common/Muck"))
-							command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
-						if (is_bep_installed("G:/SteamLibrary/steamapps/common/Muck"))
-							command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
-						run_command(command);
-						break;
-					case(2):
-						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight"))
-							command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip -C Hollow";
-						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Hollow Knight"))
-							command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
-						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Hollow Knight"))
-							command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
-						if (is_bep_installed("F:/SteamLibrary/steamapps/common/Hollow Knight"))
-							command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
-						if (is_bep_installed("G:/SteamLibrary/steamapps/common/Hollow Knight"))
-							command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
-						run_command(command);
-						break;
-					case(3):
-						if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions Of Ruin"))
-							command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip -C Regions";
-						if (is_bep_installed("D:/SteamLibrary/steamapps/common/Regions Of Ruin"))
-							command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip D:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
-						if (is_bep_installed("E:/SteamLibrary/steamapps/common/Regions Of Ruin"))
-							command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip E:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
-						if (is_bep_installed("F:/SteamLibrary/steamapps/common/Regions Of Ruin"))
-							command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip F:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
-						if (is_bep_installed("G:/SteamLibrary/steamapps/common/Regions Of Ruin"))
-							command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip G:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
-						run_command(command);
-						break;
+							if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Havendock Demo"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip -C HavendockD";
+							if (is_bep_installed("D:/SteamLibrary/steamapps/common/Havendock Demo"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
+							if (is_bep_installed("E:/SteamLibrary/steamapps/common/Havendock Demo"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
+							if (is_bep_installed("F:/SteamLibrary/steamapps/common/Havendock Demo"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
+							if (is_bep_installed("G:/SteamLibrary/steamapps/common/Havendock Demo"))
+								command = "python resources/scripts/copyzip.py havendock\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Havendock Demo/BepInEx/plugins";
+							run_command(command);
+							break;
+						case(1):
+							if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Muck"))
+								command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip -C Muck";
+							if (is_bep_installed("D:/SteamLibrary/steamapps/common/Muck"))
+								command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
+							if (is_bep_installed("E:/SteamLibrary/steamapps/common/Muck"))
+								command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
+							if (is_bep_installed("F:/SteamLibrary/steamapps/common/Muck"))
+								command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
+							if (is_bep_installed("G:/SteamLibrary/steamapps/common/Muck"))
+								command = "python resources/scripts/copyzip.py muck\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Muck/BepInEx/plugins";
+							run_command(command);
+							break;
+						case(2):
+							if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight"))
+								command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip -C Hollow";
+							if (is_bep_installed("D:/SteamLibrary/steamapps/common/Hollow Knight"))
+								command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip D:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
+							if (is_bep_installed("E:/SteamLibrary/steamapps/common/Hollow Knight"))
+								command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip E:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
+							if (is_bep_installed("F:/SteamLibrary/steamapps/common/Hollow Knight"))
+								command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip F:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
+							if (is_bep_installed("G:/SteamLibrary/steamapps/common/Hollow Knight"))
+								command = "python resources/scripts/copyzip.py hollowknight\\unityexplorer6_mono.zip G:/SteamLibrary/steamapps/common/Hollow Knight/BepInEx/plugins";
+							run_command(command);
+							break;
+						case(3):
+							if (is_bep_installed("C:/Program Files (x86)/Steam/steamapps/common/Regions Of Ruin"))
+								command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip -C Regions";
+							if (is_bep_installed("D:/SteamLibrary/steamapps/common/Regions Of Ruin"))
+								command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip D:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
+							if (is_bep_installed("E:/SteamLibrary/steamapps/common/Regions Of Ruin"))
+								command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip E:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
+							if (is_bep_installed("F:/SteamLibrary/steamapps/common/Regions Of Ruin"))
+								command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip F:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
+							if (is_bep_installed("G:/SteamLibrary/steamapps/common/Regions Of Ruin"))
+								command = "python resources/scripts/copyzip.py regionsofruin\\unityexplorer5_mono.zip G:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins";
+							run_command(command);
+							break;
+						}
+
 					}
-
-				}
-				break;
+					break;
 				case(-5): //installs console commands
 					switch (mainDisplay.function_last_used)
 					{
@@ -569,46 +570,46 @@ public:
 					}
 					break;
 				case(-1): // opens my discord page
-				{
+					{
 
-					command = "start https://discord.gg/daMWV3TTea";
-					run_command(command);
-				}
-				break;
+						command = "start https://discord.gg/daMWV3TTea";
+						run_command(command);
+					}
+					break;
 				case(0): // switch mainDisplay to havendock
-				{
-					mainDisplay.setName("havendock");
-					mainDisplay.bep_version = 6;
-					mainDisplay.texture.loadFromFile("resources/images/havendock.png");
-					mainDisplay.function_last_used = 0;
-				}
-				break;
+					{
+						mainDisplay.setName("havendock");
+						mainDisplay.bep_version = 6;
+						mainDisplay.texture.loadFromFile("resources/images/havendock.png");
+						mainDisplay.function_last_used = 0;
+					}
+					break;
 				case(1): //switch mainDisplay to muck
-				{
-					mainDisplay.setName("muck");
-					mainDisplay.bep_version = 6;
-					mainDisplay.texture.loadFromFile("resources/images/muck.png");
-					mainDisplay.function_last_used = 1;
-				}
-				break;
+					{
+						mainDisplay.setName("muck");
+						mainDisplay.bep_version = 6;
+						mainDisplay.texture.loadFromFile("resources/images/muck.png");
+						mainDisplay.function_last_used = 1;
+					}
+					break;
 				case(2): //switch mainDisplay to hollow knight
-				{
-					mainDisplay.setName("hollow knight");
-					mainDisplay.bep_version = 6;
-					mainDisplay.texture.loadFromFile("resources/images/hollowknight.png");
-					mainDisplay.function_last_used = 2;
-				}
-				break;
+					{
+						mainDisplay.setName("hollow knight");
+						mainDisplay.bep_version = 6;
+						mainDisplay.texture.loadFromFile("resources/images/hollowknight.png");
+						mainDisplay.function_last_used = 2;
+					}
+					break;
 				case(3): //switch mainDisplay to regions of ruin
-				{
+					{
 
 
-					mainDisplay.setName("regions of ruin");
-					mainDisplay.bep_version = 5;
-					mainDisplay.texture.loadFromFile("resources/images/regionsofruin.png");
-					mainDisplay.function_last_used = 3;
-				}
-				break;
+						mainDisplay.setName("regions of ruin");
+						mainDisplay.bep_version = 5;
+						mainDisplay.texture.loadFromFile("resources/images/regionsofruin.png");
+						mainDisplay.function_last_used = 3;
+					}
+					break;
 				default:
 					mainDisplay.setName("error");
 					mainDisplay.bep_version = 6;

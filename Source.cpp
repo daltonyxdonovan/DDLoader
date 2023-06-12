@@ -466,7 +466,7 @@ int main()
 	Button windowflip_mods = Button("install panel", sf::Vector2f(1050, 80), -10, 6, sf::Vector2f(340,35), 16);
 	Button windowflip_manager = Button("mods panel", sf::Vector2f(1398, 80), -11, 6, sf::Vector2f(340, 35), 16);
 
-	Filescanner filescanner = Filescanner();
+	Filescanner filescanner = Filescanner(font);
 
 
 	//make sure we're actually zero-ed out in state

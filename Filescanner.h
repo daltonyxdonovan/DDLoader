@@ -29,7 +29,7 @@ public:
 	sf::Vector2f position;
 	int y_offset;
 
-	Mod(string name)
+	Mod(string name, sf::Font& font)
 	{
 		this->name = name;
 		this->enabled = false;
@@ -37,10 +37,11 @@ public:
 		this->shape.setFillColor(sf::Color(40, 40, 40, 255));
 		this->shape.setOrigin(shape.getSize().x / 2, shape.getSize().y / 2);
 		this->shape.setPosition(position);
-		this->font.loadFromFile("resources/RobotoMono-Light.ttf");
+		this->font = font;
 		this->text.setFont(font);
 		this->text.setString(name);
-		this->text.setCharacterSize(30);
+		this->text.setCharacterSize(16);
+		this->text.setOrigin(0, text.getGlobalBounds().height / 2);
 		this->text.setStyle(sf::Text::Bold);
 		this->text.setFillColor(sf::Color(255, 255, 255, 255));
 		this->text.setPosition(sf::Vector2f(position.x - text.getGlobalBounds().width / 2, position.y));
@@ -70,14 +71,15 @@ public:
 	sf::Vector2f position;
 	sf::Vector2f size;
 	bool refresh;
+	sf::Font font;
 
 	sf::RectangleShape border;
 	vector<Mod> mods{};
 
-	Filescanner()
+	Filescanner(sf::Font& font)
 	{
 
-
+		this->font = font;
 		this->path = "C:/Program Files (x86)/Steam/steamapps/common/Havendock";
 		this->path2 = "D:/SteamLibrary/steamapps/common/Havendock";
 		this->path3 = "E:/SteamLibrary/steamapps/common/Havendock";
@@ -99,6 +101,7 @@ public:
 
 	};
 
+	
 	bool is_bep_installed(string directory)
 	{
 		//if there is a folder named bepinex in the directory, return true.
@@ -119,19 +122,22 @@ public:
 	{
 		window.draw(border);
 
+		//if 
 		int filepath_needed = 0;
 		int amount_of_mods = 0;
 
 		if (is_bep_installed(path))
 			filepath_needed = 0;
-		if (is_bep_installed(path2))
+		else if (is_bep_installed(path2))
 			filepath_needed = 1;
-		if (is_bep_installed(path3))
+		else if (is_bep_installed(path3))
 			filepath_needed = 2;
-		if (is_bep_installed(path4))
+		else if (is_bep_installed(path4))
 			filepath_needed = 3;
-		if (is_bep_installed(path5))
+		else if (is_bep_installed(path5))
 			filepath_needed = 4;
+		else
+			return;
 
 		if (refresh)
 		{
@@ -140,11 +146,12 @@ public:
 			mods.clear();
 			if (filepath_needed == 0)
 			{
+				
 				for (const auto& entry : filesystem::directory_iterator(path + "/BepInEx/plugins"))
 				{
 					amount_of_mods++;
 					//add a mod to the vector.
-					mods.push_back(Mod(entry.path().filename().string()));
+					mods.push_back(Mod(entry.path().filename().string(),font));
 				}
 			}
 			if (filepath_needed == 1)
@@ -153,7 +160,7 @@ public:
 				{
 					amount_of_mods++;
 					//add a mod to the vector.
-					mods.push_back(Mod(entry.path().filename().string()));
+					mods.push_back(Mod(entry.path().filename().string(), font));
 				}
 			}
 			if (filepath_needed == 2)
@@ -162,7 +169,7 @@ public:
 				{
 					amount_of_mods++;
 					//add a mod to the vector.
-					mods.push_back(Mod(entry.path().filename().string()));
+					mods.push_back(Mod(entry.path().filename().string(), font));
 				}
 			}
 			if (filepath_needed == 3)
@@ -171,7 +178,7 @@ public:
 				{
 					amount_of_mods++;
 					//add a mod to the vector.
-					mods.push_back(Mod(entry.path().filename().string()));
+					mods.push_back(Mod(entry.path().filename().string(), font));
 				}
 			}
 			if (filepath_needed == 4)
@@ -180,7 +187,7 @@ public:
 				{
 					amount_of_mods++;
 					//add a mod to the vector.
-					mods.push_back(Mod(entry.path().filename().string()));
+					mods.push_back(Mod(entry.path().filename().string(), font));
 				}
 			}
 
@@ -192,6 +199,8 @@ public:
 				mods[i].text.setPosition(sf::Vector2f(mods[i].position.x - mods[i].text.getGlobalBounds().width / 2, mods[i].position.y));
 				
 			}
+
+			// vvv this is a way for me to save on cpu, but really it's negligible rn
 			//refresh = false;
 		}
 

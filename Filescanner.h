@@ -34,13 +34,41 @@ public:
 	sf::Vector2f size;
 	bool refresh;
 
+	sf::RectangleShape border;
+
 	Filescanner()
 	{
+
+
 		this->path = "C:/Program Files (x86)/Steam/steamapps/common/Havendock";
 		this->path2 = "D:/SteamLibrary/steamapps/common/Havendock";
-		this->path3 = "C:/Program Files/Steam/steamapps/common/Havendock";
-		this->path4 = "C:/Program Files (x86)/Steam/steamapps/common/Havendock";
-		this->path5 = "C:/Program Files (x86)/Steam/steamapps/common/Havendock";
+		this->path3 = "E:/SteamLibrary/steamapps/common/Havendock";
+		this->path4 = "F:/SteamLibrary/steamapps/common/Havendock";
+		this->path5 = "G:/SteamLibrary/steamapps/common/Havendock";
+
+		this->game_id = "havendock";
+		this->scroll_y = 0;
+		this->position = sf::Vector2f(1225, 430);
+		this->size = sf::Vector2f(660, 660);
+		this->refresh = true;
+		this->border = sf::RectangleShape(size);
+		this->border.setFillColor(sf::Color(240, 40, 40, 255));
+		this->border.setOrigin(size.x / 2, size.y / 2);
+		this->border.setPosition(position);
+
+
+
+
+	};
+
+	void draw(sf::RenderWindow& window)
+	{
+		window.draw(border);
+	}
+
+	void update()
+	{
+
 	}
 
 };

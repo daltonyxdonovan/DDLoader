@@ -19,6 +19,7 @@
 #include <codecvt>
 #include "MainDisplay.h"
 #include "Button.h"
+#include "Filescanner.h"
 #pragma comment(lib, "Shlwapi.lib")
 
 #include <shlwapi.h>
@@ -465,6 +466,9 @@ int main()
 	Button windowflip_mods = Button("install panel", sf::Vector2f(1050, 75), -10, 6, sf::Vector2f(340,25), 10);
 	Button windowflip_manager = Button("mods panel", sf::Vector2f(1398, 75), -11, 6, sf::Vector2f(340, 25), 10);
 
+	Filescanner filescanner = Filescanner();
+
+
 	//make sure we're actually zero-ed out in state
 	mainDisplay.setName("havendock");
 	mainDisplay.bep_version = 6;
@@ -812,7 +816,8 @@ int main()
 		else if (!installer);
 		{
 			//if in mod filescanner mode
-			
+			filescanner.draw(window);
+			filescanner.update();
 		}
 
 		//draw the window

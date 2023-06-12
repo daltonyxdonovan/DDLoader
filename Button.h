@@ -16,6 +16,7 @@
 
 #include <shlwapi.h>
 #include "MainDisplay.h"
+#include "Filescanner.h"
 
 using namespace std;
 
@@ -285,7 +286,7 @@ public:
 
 	//holy crap I will never use switch statements again i hate this mess
 	//used to think they were clean, but not only is this an unmanageable mess, i ALSO don't know what anything IS, because it's all numbers
-	void update(sf::RenderWindow& window, MainDisplay& mainDisplay,bool& installer)
+	void update(sf::RenderWindow& window, MainDisplay& mainDisplay,bool& installer, Filescanner& filescanner)
 	{
 		if (ticker > 0)
 		{
@@ -622,6 +623,12 @@ public:
 						mainDisplay.bep_version = 6;
 						mainDisplay.texture.loadFromFile("resources/images/havendock.png");
 						mainDisplay.function_last_used = 0;
+
+						filescanner.path = "C:/Program Files (x86)/Steam/steamapps/common/Havendock";
+						filescanner.path2 = "D:/SteamLibrary/steamapps/common/Havendock";
+						filescanner.path3 = "E:/SteamLibrary/steamapps/common/Havendock";
+						filescanner.path4 = "F:/SteamLibrary/steamapps/common/Havendock";
+						filescanner.path5 = "G:/SteamLibrary/steamapps/common/Havendock";
 					}
 					break;
 				case(1): //switch mainDisplay to muck
@@ -630,6 +637,12 @@ public:
 						mainDisplay.bep_version = 6;
 						mainDisplay.texture.loadFromFile("resources/images/muck.png");
 						mainDisplay.function_last_used = 1;
+
+						filescanner.path = "C:/Program Files (x86)/Steam/steamapps/common/Muck";
+						filescanner.path2 = "D:/SteamLibrary/steamapps/common/Muck";
+						filescanner.path3 = "E:/SteamLibrary/steamapps/common/Muck";
+						filescanner.path4 = "F:/SteamLibrary/steamapps/common/Muck";
+						filescanner.path5 = "G:/SteamLibrary/steamapps/common/Muck";
 					}
 					break;
 				case(2): //switch mainDisplay to hollow knight
@@ -638,6 +651,12 @@ public:
 						mainDisplay.bep_version = 6;
 						mainDisplay.texture.loadFromFile("resources/images/hollowknight.png");
 						mainDisplay.function_last_used = 2;
+
+						filescanner.path = "C:/Program Files (x86)/Steam/steamapps/common/Hollow Knight";
+						filescanner.path2 = "D:/SteamLibrary/steamapps/common/Hollow Knight";
+						filescanner.path3 = "E:/SteamLibrary/steamapps/common/Hollow Knight";
+						filescanner.path4 = "F:/SteamLibrary/steamapps/common/Hollow Knight";
+						filescanner.path5 = "G:/SteamLibrary/steamapps/common/Hollow Knight";
 					}
 					break;
 				case(3): //switch mainDisplay to regions of ruin
@@ -648,6 +667,12 @@ public:
 						mainDisplay.bep_version = 5;
 						mainDisplay.texture.loadFromFile("resources/images/regionsofruin.png");
 						mainDisplay.function_last_used = 3;
+
+						filescanner.path = "C:/Program Files (x86)/Steam/steamapps/common/Regions Of Ruin";
+						filescanner.path2 = "D:/SteamLibrary/steamapps/common/Regions Of Ruin";
+						filescanner.path3 = "E:/SteamLibrary/steamapps/common/Regions Of Ruin";
+						filescanner.path4 = "F:/SteamLibrary/steamapps/common/Regions Of Ruin";
+						filescanner.path5 = "G:/SteamLibrary/steamapps/common/Regions Of Ruin";
 					}
 					break;
 				default:

@@ -807,11 +807,11 @@ int main()
 			window.draw(console_commands_text);
 			window.draw(unityexplorer_text);
 
-			mods_folder.update(window, mainDisplay, installer);
-			help_cc.update(window, mainDisplay, installer);
-			help_ue.update(window, mainDisplay, installer);
-			unityexplorer_install.update(window, mainDisplay, installer);
-			consolecommands_install.update(window, mainDisplay, installer);
+			mods_folder.update(window, mainDisplay, installer, filescanner);
+			help_cc.update(window, mainDisplay, installer, filescanner);
+			help_ue.update(window, mainDisplay, installer, filescanner);
+			unityexplorer_install.update(window, mainDisplay, installer, filescanner);
+			consolecommands_install.update(window, mainDisplay, installer, filescanner);
 		}
 		else
 		{
@@ -829,15 +829,15 @@ int main()
 		windowflip_mods.draw(window);
 
 		//update the window
-		windowflip_manager.update(window, mainDisplay, installer);
-		windowflip_mods.update(window, mainDisplay, installer);
-		bep_install.update(window, mainDisplay, installer);
-		bep_uninstall.update(window, mainDisplay, installer);
-		button1.update(window, mainDisplay, installer);
-		button2.update(window, mainDisplay, installer);
-		button3.update(window, mainDisplay, installer);
-		button4.update(window, mainDisplay, installer);
-		discord.update(window, mainDisplay, installer);
+		windowflip_manager.update(window, mainDisplay, installer, filescanner);
+		windowflip_mods.update(window, mainDisplay, installer, filescanner);
+		bep_install.update(window, mainDisplay, installer, filescanner);
+		bep_uninstall.update(window, mainDisplay, installer, filescanner);
+		button1.update(window, mainDisplay, installer, filescanner);
+		button2.update(window, mainDisplay, installer, filescanner);
+		button3.update(window, mainDisplay, installer, filescanner);
+		button4.update(window, mainDisplay, installer, filescanner);
+		discord.update(window, mainDisplay, installer, filescanner);
 		mainDisplay.update("havendock");
 		window.setFramerateLimit(60);
 		window.display();

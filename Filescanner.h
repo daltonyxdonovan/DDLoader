@@ -31,7 +31,11 @@ public:
 	bool enabled;
 	sf::Texture texture_yes;
 	sf::Texture texture_no;
-	sf::Sprite sprite;
+	sf::Texture texture_trash;
+	sf::Sprite sprite; //this is the checkmark
+	sf::Sprite sprite_trash; //this is delete
+
+
 	//reference to the actual mod file
 	//this is used to check if the mod is disabled or not
 	string mod_file_full_address;
@@ -61,10 +65,13 @@ public:
 		this->enabled = true;
 		this->texture_yes.loadFromFile("resources/images/yes.png");
 		this->texture_no.loadFromFile("resources/images/no.png");
+		this->texture_trash.loadFromFile("resources/images/trash.png");
 		this->sprite.setTexture(texture_yes);
 		this->sprite.setOrigin(texture_yes.getSize().x / 2, texture_yes.getSize().y / 2);
 		this->sprite.setPosition(sf::Vector2f(position.x + 300, position.y));
-
+		this->sprite_trash.setTexture(texture_trash);
+		this->sprite_trash.setOrigin(texture_trash.getSize().x / 2, texture_trash.getSize().y / 2);
+		this->sprite_trash.setPosition(sf::Vector2f(position.x + 260, position.y));
 		
 
 	}
@@ -100,7 +107,6 @@ public:
 		OutputDebugString(long_message);
 	}
 
-
 	void enable(string filename)
 	{
 		//rename filename.ddloader to filename ONLY IF it ends in .ddloader
@@ -126,6 +132,22 @@ public:
 			this->sprite.setTexture(texture_yes);
 		}
 		window.draw(sprite);
+		sprite_trash.setTexture(texture_trash);
+		window.draw(sprite_trash);
+	}
+
+	void remove_directory(string directory)
+	{
+		//delete the folder
+		//Log("Deleting folder: " + directory);
+		std::wstring wide_directory(directory.begin(), directory.end());
+		LPCWSTR long_directory = wide_directory.c_str();
+		SHFILEOPSTRUCT file_op = { 0 };
+		file_op.wFunc = FO_DELETE;
+		file_op.pFrom = long_directory;
+		file_op.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;
+		SHFileOperation(&file_op);
+
 	}
 
 	void update(sf::RenderWindow& window, bool& refresh, bool& allow_clicks, int& allow_clicks_ticker)
@@ -140,6 +162,7 @@ public:
 			ticker = 0;
 		this->text.setString(name);
 		this->sprite.setPosition(sf::Vector2f(position.x + 305, position.y));
+		this->sprite_trash.setPosition(sf::Vector2f(position.x + 260, position.y));
 		//check if mod is enabled or disabled.
 		if (is_disabled(name))
 		{
@@ -186,6 +209,36 @@ public:
 					enable(this->mod_file_full_address);
 					this->sprite.setTexture(texture_yes);
 					Log("this has now been enabled.             ");
+				}
+				refresh = true;
+			}
+
+			if (sprite_trash.getGlobalBounds().contains(sf::Vector2f(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y)))
+			{
+				if (!allow_clicks)
+					return;
+				ticker = 120;
+				allow_clicks = false;
+				allow_clicks_ticker = 30;
+
+				bool is_folder = false;
+				//check if it ends in .dll or .ddloader. if not, is_folder = true.
+				if (this->mod_file_full_address.substr(this->mod_file_full_address.length() - 4, this->mod_file_full_address.length()) != ".dll" && this->mod_file_full_address.substr(this->mod_file_full_address.length() - 9, this->mod_file_full_address.length()) != ".ddloader")
+				{
+					is_folder = true;
+				}
+
+				
+				
+				if (is_folder)
+				{
+					//Log("Deleting folder: " + this->mod_file_full_address);
+					remove_directory(this->mod_file_full_address.c_str());
+					//Log("this has now been deleted.             ");
+				}
+				else
+				{
+					remove(this->mod_file_full_address.c_str());
 				}
 				refresh = true;
 			}
@@ -404,6 +457,7 @@ public:
 				mods[i].sprite.setPosition(sf::Vector2f(mods[i].position.x + 305, mods[i].position.y));
 				mods[i].texture_yes = yes_texture;
 				mods[i].texture_no = no_texture;
+				mods[i].sprite_trash.setPosition(sf::Vector2f(mods[i].position.x + 260, mods[i].position.y));
 			}
 
 			// vvv this is a way for me to save on cpu, but really it's negligible rn

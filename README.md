@@ -2,7 +2,7 @@
 
 ## DDLoader Mod Manager (for Muck+++, Hollow Knight, Havendock++, and Regions of Ruin!)
 
-_ + denotes a caveat, noted in installation below_
++ denotes a caveat, noted in installation below
 
 This is a project I've spent admittedly way too much time on for what it is, but it's been very useful for developing mods so far.
 It's a tool that allows you to delete, enable or disable mods from the game's mod folder without having to manually move them around,
@@ -39,6 +39,6 @@ NOTE+: resources has to be in the same folder as DDLoader.exe at all times!
 
 NOTE++:Havendock and Havendock Demo will collide, get rid of Havendock Demo if you want to use the Havendock section. You bought the game already anyways!
 
-NOTE+++:Muck uses Bep6 here, most mods use Bep5. If you want to use Bep5 mods, you'll have to install Bep5 yourself. I'll add a button for it later, but I'm not too concerned about it right now.
+NOTE+++:Muck uses Bep6 here (my mods use bep6 normally), most mods use Bep5. If you want to use Bep5 mods, you'll have to install Bep5 yourself. I'll add a button for it later, but I'm not too concerned about it right now.
 
 

@@ -343,6 +343,9 @@ int main()
 	
 	MainDisplay mainDisplay = MainDisplay("DDLoader", 6, sf::Vector2f(950, 415), sf::Vector2f(1250, 720), texture);
 
+#pragma region UIOBJECTS
+
+
 	//set up text objects and shapes for titlebar/UI
 	sf::Text program_title;
 	program_title.setFont(font);
@@ -485,7 +488,8 @@ int main()
 	sf::Texture discord_texture;
 	discord_texture.loadFromFile("resources/images/discord.png");
 
-	
+
+#pragma endregion UIOBJECTS
 
 	//create game buttons
 	vector<Button> buttons;

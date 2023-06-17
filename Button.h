@@ -428,6 +428,7 @@ public:
 							open_directory_in_explorer("G:/SteamLibrary/steamapps/common/Regions Of Ruin/BepInEx/plugins");
 						break;
 					}
+					break;
 				case(-4): //installs Unityexplorer
 					{
 						switch (mainDisplay.function_last_used)
